@@ -3,22 +3,20 @@
 buildscript {
 
     ext {
-        kotlin_version = '1.3.21'
-        kotlin_serialization_version = '0.10.0'
-        coroutines_version = "1.1.1"
+        kotlin_version = '1.3.30'
+        kotlin_serialization_version = '0.11.0'
+        coroutines_version = "1.2.0"
 
         junit_version = "4.12"
-        mockk_version = "1.9.2"
-        assertk_version = "0.12"
+        mockk_version = "1.9.3"
+        assertk_version = "0.13"
         detekt_version = "1.0.0-RC14"
 
         moshi_version = "1.8.0"
         okhttp_version = "3.10.0"
 
         kmnid_version = "0.2.1"
-        kethereum_version = "0.63"
-        khex_version = "0.5"
-        tweetnacl_k_version = "0.0.1"
+        kethereum_version = "0.74.8"//"0.63"
 
         current_release_version = "0.0.1"
     }

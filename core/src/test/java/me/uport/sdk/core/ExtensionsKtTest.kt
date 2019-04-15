@@ -2,7 +2,7 @@
 
 package me.uport.sdk.core
 
-import assertk.assert
+import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -22,7 +22,7 @@ class ExtensionsKtTest {
         suspend fun whatever(): String = withContext(UI) { "hello world" }
 
         runBlocking {
-            assert(whatever()).isEqualTo("hello world")
+            assertThat(whatever()).isEqualTo("hello world")
         }
     }
 
@@ -43,16 +43,16 @@ class ExtensionsKtTest {
                 "foo bar baz"
         )
         strings.forEach {
-            assert(String(it.toBase64().decodeBase64())).isEqualTo(it)
-            assert(it.toBase64().decodeBase64()).isEqualTo(it.toByteArray())
-            assert(it.toBase64UrlSafe().decodeBase64()).isEqualTo(it.toByteArray())
+            assertThat(String(it.toBase64().decodeBase64())).isEqualTo(it)
+            assertThat(it.toBase64().decodeBase64()).isEqualTo(it.toByteArray())
+            assertThat(it.toBase64UrlSafe().decodeBase64()).isEqualTo(it.toByteArray())
         }
 
         val bytes = ByteArray(255) { it.toByte() }
         for (i in 0..bytes.size) {
             val tested = bytes.copyOfRange(0, i)
-            assert(tested.toBase64().decodeBase64()).isEqualTo(tested)
-            assert(tested.toBase64UrlSafe().decodeBase64()).isEqualTo(tested)
+            assertThat(tested.toBase64().decodeBase64()).isEqualTo(tested)
+            assertThat(tested.toBase64UrlSafe().decodeBase64()).isEqualTo(tested)
         }
     }
 }

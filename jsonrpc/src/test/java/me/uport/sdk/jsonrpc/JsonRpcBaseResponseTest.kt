@@ -1,6 +1,6 @@
 package me.uport.sdk.jsonrpc
 
-import assertk.assert
+import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
 import io.mockk.coEvery
@@ -37,12 +37,12 @@ class JsonRpcBaseResponseTest {
         val item = adapter.fromJson(logItemJson)
 
 
-        assert(item).isNotNull()
+        assertThat(item).isNotNull()
         item!!
 
-        assert(item.address).isEqualTo("0xdca7ef03e98e0dc2b855be647c39abe984fcf21b")
-        assert(item.topics.size).isEqualTo(2)
-        assert(item.transactionIndex).isEqualTo(BigInteger.ONE)
+        assertThat(item.address).isEqualTo("0xdca7ef03e98e0dc2b855be647c39abe984fcf21b")
+        assertThat(item.topics.size).isEqualTo(2)
+        assertThat(item.transactionIndex).isEqualTo(BigInteger.ONE)
     }
 
     @Test
@@ -55,6 +55,7 @@ class JsonRpcBaseResponseTest {
         val tested = JsonRPC(Networks.rinkeby.rpcUrl, http)
 
         val receipt = tested.getTransactionReceipt("0x1dab51a1127c0294359193b1e0b7f2c8e414efe7e9a85dee59fca21d9b179dcb")
-        assert(receipt).isNotNull()
+        assertThat(receipt).isNotNull()
+        Unit
     }
 }

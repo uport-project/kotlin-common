@@ -12,7 +12,7 @@ import kotlin.reflect.KClass
  * simple wrapper to make assertions on coroutine blocks
  */
 fun <T> coAssert(block: suspend CoroutineScope.() -> T): AssertBlock<T> {
-    return assertk.assert {
+    return assertk.assertThat {
         runBlocking {
             block()
         }
@@ -22,7 +22,7 @@ fun <T> coAssert(block: suspend CoroutineScope.() -> T): AssertBlock<T> {
 /**
  * assert that an object is an instance of one of a list of classes
  */
-fun <T : Any> Assert<T>.isInstanceOf(classes: List<KClass<*>>) {
+fun <T : Any> Assert<T>.isInstanceOf(classes: List<KClass<*>>) = transform { actual ->
     val matches = classes.filter { kClass ->
         kClass.isInstance(actual)
     }
@@ -30,5 +30,6 @@ fun <T : Any> Assert<T>.isInstanceOf(classes: List<KClass<*>>) {
     if (matches.isEmpty()) {
         expected("to be instance of one of:[${show(classes)}] but had class:${show(actual::class)}")
     }
-}
 
+    actual
+}
