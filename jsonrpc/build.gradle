@@ -5,8 +5,14 @@ apply plugin: "com.jfrog.bintray"
 
 project.ext.description = "wrappers for calling ethereum endpoints using json-rpc"
 
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
 
     implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"
