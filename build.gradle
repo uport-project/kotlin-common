@@ -15,10 +15,10 @@ buildscript {
         moshi_version = "1.8.0"
         okhttp_version = "3.14.1"
 
-        kmnid_version = "0.2.1"
-        kethereum_version = "0.74.8"
+        kmnid_version = "0.3"
+        kethereum_version = "0.75.0"
 
-        current_release_version = "0.0.2"
+        current_release_version = "0.0.3"
     }
 
     repositories {
