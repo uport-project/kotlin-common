@@ -38,7 +38,7 @@ class HttpClient {
         }.build()
 
         val response = okClient.newCall(request).execute()
-                ?: throw IOException("got a null reply from server")
+
         if (response.isSuccessful) {
             return withContext(Dispatchers.IO) { response.body()?.string() }
                     ?: throw IOException("got a null response body")
@@ -64,7 +64,7 @@ class HttpClient {
         }.build()
 
         val response = okClient.newCall(request).execute()
-                ?: throw IOException("got a null reply from server")
+
         if (response.isSuccessful) {
             return withContext(Dispatchers.IO) { response.body()?.string() }
                     ?: throw IOException("got a null response body")

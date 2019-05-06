@@ -1,4 +1,4 @@
-@file:Suppress("unused", "TooManyFunctions")
+@file:Suppress("unused", "TooManyFunctions", "MagicNumber")
 
 package me.uport.sdk.signer
 

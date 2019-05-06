@@ -50,14 +50,20 @@ open class JsonRPC(private val rpcEndpoint: String, val httpClient: HttpClient =
 //=============================
 
     /**
-     * obtains the list of [JsonRpcLogItem]s corresponding to a given [address] and [topics] between [[fromBlock]..[toBlock]]
+     * obtains the list of [JsonRpcLogItem]s corresponding to a given [address] and [topics]
+     * between [[fromBlock]..[toBlock]]
      *
      * See also: https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_getlogs
      *
      * @throws JsonRpcException for error replies coming from the endpoint
      * @throws IOException for network errors or unexpected reply formats
      */
-    suspend fun getLogs(address: String, topics: List<Any?> = emptyList(), fromBlock: BigInteger, toBlock: BigInteger): List<JsonRpcLogItem> {
+    suspend fun getLogs(
+            address: String,
+            topics: List<Any?> = emptyList(),
+            fromBlock: BigInteger,
+            toBlock: BigInteger
+    ): List<JsonRpcLogItem> {
         val payloadRequest = JsonRpcBaseRequest(
                 method = "eth_getLogs",
                 params = listOf(
@@ -71,7 +77,10 @@ open class JsonRPC(private val rpcEndpoint: String, val httpClient: HttpClient =
         ).toJson()
 
         val logItemsRaw = jsonRpcGenericCall(rpcEndpoint, payloadRequest)
-        val type: ParameterizedType = Types.newParameterizedType(List::class.java, JsonRpcLogItem::class.java)
+        val type: ParameterizedType = Types.newParameterizedType(
+                List::class.java,
+                JsonRpcLogItem::class.java
+        )
         val jsonAdapter: JsonAdapter<List<JsonRpcLogItem>> = moshi.adapter(type)
         val logs = jsonAdapter.lenient().fromJson(logItemsRaw) ?: emptyList()
         return logs

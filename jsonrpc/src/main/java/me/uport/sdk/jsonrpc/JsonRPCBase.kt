@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package me.uport.sdk.jsonrpc
 
 import com.squareup.moshi.FromJson
@@ -74,11 +76,13 @@ class JsonRpcError(val code: Int, val message: String) {
     fun toException() = JsonRpcException(code, message)
 }
 
+const val JSON_RPC_INTERNAL_ERROR_CODE = -32603
+
 /**
  * Exception equivalent of a [JsonRpcError]
  */
 class JsonRpcException(
-        val code: Int = -32603,
+        val code: Int = JSON_RPC_INTERNAL_ERROR_CODE,
         override val message: String = "Internal error"
 ) : Exception(message)
 
