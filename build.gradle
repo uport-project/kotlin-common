@@ -42,27 +42,27 @@ plugins {
     id "io.errorlab.gradle.vault" version "0.1.0"
 }
 
-//apply plugin: "io.gitlab.arturbosch.detekt"
-//
-//detekt {
-//    version = detekt_version
-//    input = files(
-//            "$projectDir"
-//    )
-//    //config = "${projectDir}/detekt.yml"
-//    filters = ".*test.*,.*/resources/.*,.*/tmp/.*,.*/build/.*"
-//    parallel = true
-//    reports {
-//        xml {
-//            enabled = true
-//            destination = file("${project.buildDir}/reports/detekt.xml")
-//        }
-//        html {
-//            enabled = true
-//            destination = file("${project.buildDir}/reports/detekt.html")
-//        }
-//    }
-//}
+apply plugin: "io.gitlab.arturbosch.detekt"
+
+detekt {
+    version = detekt_version
+    input = files(
+            "$projectDir"
+    )
+    //config = "${projectDir}/detekt.yml"
+    filters = ".*test.*,.*/resources/.*,.*/tmp/.*,.*/build/.*"
+    parallel = true
+    reports {
+        xml {
+            enabled = true
+            destination = file("${project.buildDir}/reports/detekt.xml")
+        }
+        html {
+            enabled = true
+            destination = file("${project.buildDir}/reports/detekt.html")
+        }
+    }
+}
 
 allprojects {
     repositories {
