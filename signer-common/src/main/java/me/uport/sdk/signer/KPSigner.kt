@@ -1,4 +1,4 @@
-package me.uport.sdk.core
+package me.uport.sdk.signer
 
 import org.kethereum.crypto.signMessage
 import org.kethereum.crypto.signMessageHash
