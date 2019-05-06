@@ -39,5 +39,4 @@ class KPSigner(privateKey: String) : Signer {
         }
 
     }
-
 }
