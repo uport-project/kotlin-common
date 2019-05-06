@@ -1,8 +1,9 @@
-package me.uport.sdk.core
+package me.uport.sdk.signer
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlinx.coroutines.runBlocking
+import me.uport.sdk.core.decodeBase64
 import org.junit.Test
 import org.kethereum.extensions.hexToBigInteger
 import org.kethereum.model.SignatureData
