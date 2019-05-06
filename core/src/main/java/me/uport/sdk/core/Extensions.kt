@@ -1,4 +1,4 @@
-@file:Suppress("unused", "TooManyFunctions")
+@file:Suppress("unused", "TooManyFunctions", "MagicNumber")
 
 package me.uport.sdk.core
 
@@ -35,13 +35,13 @@ fun ByteArray.toBase64UrlSafe() = this.toBase64().replace('+', '-').replace('/',
  * Supports unpadded and url-safe strings as well.
  */
 fun String.decodeBase64(): ByteArray = this
-        //force non-url safe and add padding so that it can be applied to all b64 formats
-        .replace('-', '+')
-        .replace('_', '/')
-        .padBase64()
-        .let {
-            if (it.isEmpty())
-                byteArrayOf()
-            else
-                Base64.decode(it)
-        }
+    //force non-url safe and add padding so that it can be applied to all b64 formats
+    .replace('-', '+')
+    .replace('_', '/')
+    .padBase64()
+    .let {
+        if (it.isEmpty())
+            byteArrayOf()
+        else
+            Base64.decode(it)
+    }

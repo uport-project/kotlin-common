@@ -14,6 +14,7 @@ import org.kethereum.model.SignatureData
  *
  * There is no special handling of threads for callbacks.
  */
+@Suppress("TooGenericExceptionCaught")
 class KPSigner(privateKey: String) : Signer {
 
     private val keyPair = PrivateKey(privateKey.hexToBigInteger()).toECKeyPair()
@@ -39,5 +40,4 @@ class KPSigner(privateKey: String) : Signer {
         }
 
     }
-
 }

@@ -24,7 +24,8 @@ object Networks {
     private val NETWORK_CONFIG = emptyMap<String, EthNetwork>().toMutableMap()
 
     init {
-        registerNetwork(EthNetwork(
+        registerNetwork(
+            EthNetwork(
                 name = "mainnet",
                 networkId = mainnetId,
                 rpcUrl = "https://mainnet.infura.io/v3/e72b472993ff46d3b5b88faa47214d7f",
@@ -33,8 +34,11 @@ object Networks {
                 uPortRegistry = MNID.encode(mainnetId, "0xab5c8051b9a1df1aab0149f8b0630848b7ecabf6"),
                 faucetUrl = defaultFaucetUrl,
                 relayUrl = defaultTxRelayUrl,
-                txRelayAddress = "0xec2642cd5a47fd5cca2a8a280c3b5f88828aa578"))
-        registerNetwork(EthNetwork(
+                txRelayAddress = "0xec2642cd5a47fd5cca2a8a280c3b5f88828aa578"
+            )
+        )
+        registerNetwork(
+            EthNetwork(
                 name = "rinkeby",
                 networkId = rinkebyId,
                 rpcUrl = "https://rinkeby.infura.io/v3/e72b472993ff46d3b5b88faa47214d7f",
@@ -43,8 +47,11 @@ object Networks {
                 uPortRegistry = MNID.encode(rinkebyId, "0x2cc31912b2b0f3075a87b3640923d45a26cef3ee"),
                 faucetUrl = "https://api.uport.me/sensui/fund/",
                 relayUrl = "https://api.uport.me/sensui/relay/",
-                txRelayAddress = "0xda8c6dce9e9a85e6f9df7b09b2354da44cb48331"))
-        registerNetwork(EthNetwork(
+                txRelayAddress = "0xda8c6dce9e9a85e6f9df7b09b2354da44cb48331"
+            )
+        )
+        registerNetwork(
+            EthNetwork(
                 name = "ropsten",
                 networkId = ropstenId,
                 rpcUrl = "https://ropsten.infura.io/v3/e72b472993ff46d3b5b88faa47214d7f",
@@ -53,8 +60,11 @@ object Networks {
                 uPortRegistry = MNID.encode(ropstenId, "0x41566e3a081f5032bdcad470adb797635ddfe1f0"),
                 faucetUrl = defaultFaucetUrl,
                 relayUrl = defaultTxRelayUrl,
-                txRelayAddress = "0xa5e04cf2942868f5a66b9f7db790b8ab662039d5"))
-        registerNetwork(EthNetwork(
+                txRelayAddress = "0xa5e04cf2942868f5a66b9f7db790b8ab662039d5"
+            )
+        )
+        registerNetwork(
+            EthNetwork(
                 name = "kovan",
                 networkId = kovanId,
                 rpcUrl = "https://kovan.infura.io/v3/e72b472993ff46d3b5b88faa47214d7f",
@@ -63,7 +73,9 @@ object Networks {
                 uPortRegistry = MNID.encode(kovanId, "0x5f8e9351dc2d238fb878b6ae43aa740d62fc9758"),
                 faucetUrl = defaultFaucetUrl,
                 relayUrl = defaultTxRelayUrl,
-                txRelayAddress = "0xa9235151d3afa7912e9091ab76a36cbabe219a0c"))
+                txRelayAddress = "0xa9235151d3afa7912e9091ab76a36cbabe219a0c"
+            )
+        )
     }
 
     /**
@@ -107,8 +119,8 @@ object Networks {
     fun get(networkId: String): EthNetwork {
         val cleanNetId = cleanId(networkId)
         return NETWORK_CONFIG[cleanNetId]
-                ?: NETWORK_CONFIG[networkId]
-                ?: throw IllegalStateException("network [$networkId] not configured")
+            ?: NETWORK_CONFIG[networkId]
+            ?: throw IllegalStateException("network [$networkId] not configured")
     }
 
     private fun cleanId(id: String) = id.clean0xPrefix().trimStart('0').prepend0xPrefix()
@@ -120,92 +132,92 @@ object Networks {
  */
 data class EthNetwork(
 
-        /**
-         * Name of the network
-         *
-         * Example: "kovan"
-         */
-        val name: String,
+    /**
+     * Name of the network
+     *
+     * Example: "kovan"
+     */
+    val name: String,
 
-        /**
-         * network ID - hex encoded number or first 4 bytes of genesis block hash
-         *
-         * Example: "0x2a"
-         */
-        val networkId: String,
+    /**
+     * network ID - hex encoded number or first 4 bytes of genesis block hash
+     *
+     * Example: "0x2a"
+     */
+    val networkId: String,
 
-        /**
-         * Json RPC endpoint to be used with this network.
-         * For public networks this defaults to the infura URLs
-         *
-         * Example: "https://kovan.infura.io/uport"
-         */
-        val rpcUrl: String,
+    /**
+     * Json RPC endpoint to be used with this network.
+     * For public networks this defaults to the infura URLs
+     *
+     * Example: "https://kovan.infura.io/uport"
+     */
+    val rpcUrl: String,
 
-        /**
-         *
-         * **optional**
-         *
-         * hex encoded contract address for the
-         * [EIP 1056 (ETHR DID) registry](https://github.com/uport-project/ethr-did-registry)
-         * on this network
-         *
-         * Example: "0xdca7ef03e98e0dc2b855be647c39abe984fcf21b"
-         */
-        val ethrDidRegistry: String = "",
+    /**
+     *
+     * **optional**
+     *
+     * hex encoded contract address for the
+     * [EIP 1056 (ETHR DID) registry](https://github.com/uport-project/ethr-did-registry)
+     * on this network
+     *
+     * Example: "0xdca7ef03e98e0dc2b855be647c39abe984fcf21b"
+     */
+    val ethrDidRegistry: String = "",
 
-        /**
-         * **optional**
-         *
-         * Block explorer URL.
-         * For public networks, this defaults to etherscan
-         *
-         * Example: "https://kovan.etherscan.io"
-         */
-        val explorerUrl: String = "",
+    /**
+     * **optional**
+     *
+     * Block explorer URL.
+     * For public networks, this defaults to etherscan
+     *
+     * Example: "https://kovan.etherscan.io"
+     */
+    val explorerUrl: String = "",
 
-        /**
-         * **optional**
-         *
-         * MNID encoded contract address for the `did:uport:` registry.
-         * This is used by the uPort DID resolver to fetch the location of the DID document
-         * for a particular uPort DID.
-         *
-         * Example:
-         * `MNID.encode({address: '0x5f8e9351dc2d238fb878b6ae43aa740d62fc9758', network: '0x2a'})`
-         *
-         * **NOTE** uPort DIDs are being deprecated in favor of ethr DID
-         */
-        val uPortRegistry: String = "",
+    /**
+     * **optional**
+     *
+     * MNID encoded contract address for the `did:uport:` registry.
+     * This is used by the uPort DID resolver to fetch the location of the DID document
+     * for a particular uPort DID.
+     *
+     * Example:
+     * `MNID.encode({address: '0x5f8e9351dc2d238fb878b6ae43aa740d62fc9758', network: '0x2a'})`
+     *
+     * **NOTE** uPort DIDs are being deprecated in favor of ethr DID
+     */
+    val uPortRegistry: String = "",
 
-        /**
-         * **optional**
-         *
-         * metaTX faucet URL
-         *
-         * Example: "https://sensui.uport.me/api/v1/fund/"
-         */
-        @Deprecated("uPort proxy contracts and meta TX functionality is not supported")
-        val faucetUrl: String = "",
+    /**
+     * **optional**
+     *
+     * metaTX faucet URL
+     *
+     * Example: "https://sensui.uport.me/api/v1/fund/"
+     */
+    @Deprecated("uPort proxy contracts and meta TX functionality is not supported")
+    val faucetUrl: String = "",
 
-        /**
-         * **optional**
-         *
-         * transaction relay URL
-         * Example: "https://sensui.uport.me/api/v2/relay/"
-         */
-        @Deprecated("uPort proxy contracts and meta TX functionality is not supported")
-        val relayUrl: String = "",
+    /**
+     * **optional**
+     *
+     * transaction relay URL
+     * Example: "https://sensui.uport.me/api/v2/relay/"
+     */
+    @Deprecated("uPort proxy contracts and meta TX functionality is not supported")
+    val relayUrl: String = "",
 
-        /**
-         * **optional**
-         *
-         * hex encoded transaction relay contract address
-         *
-         * Example: "0xa9235151d3afa7912e9091ab76a36cbabe219a0c"
-         */
-        @Deprecated("uPort proxy contracts and meta TX functionality is not supported")
-        val txRelayAddress: String = ""
+    /**
+     * **optional**
+     *
+     * hex encoded transaction relay contract address
+     *
+     * Example: "0xa9235151d3afa7912e9091ab76a36cbabe219a0c"
+     */
+    @Deprecated("uPort proxy contracts and meta TX functionality is not supported")
+    val txRelayAddress: String = ""
 )
 
 
