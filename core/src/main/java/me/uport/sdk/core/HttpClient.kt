@@ -41,7 +41,7 @@ class HttpClient {
 
         if (response.isSuccessful) {
             return withContext(Dispatchers.IO) { response.body()?.string() }
-                    ?: throw IOException("got a null response body")
+                ?: throw IOException("got a null response body")
         } else {
             val code = response.code()
             throw IOException("server responded with HTTP $code")
@@ -67,7 +67,7 @@ class HttpClient {
 
         if (response.isSuccessful) {
             return withContext(Dispatchers.IO) { response.body()?.string() }
-                    ?: throw IOException("got a null response body")
+                ?: throw IOException("got a null response body")
         } else {
             val code = response.code()
             throw IOException("server responded with HTTP $code")

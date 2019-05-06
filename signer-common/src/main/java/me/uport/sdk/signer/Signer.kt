@@ -38,9 +38,12 @@ interface Signer {
      * This will be replaced by `signETH` when a safe way to decode ABI encoded transactions exists
      */
     fun signRawTx(
-            unsignedTx: Transaction,
-            callback: (err: Exception?,
-                       signedEncodedTransaction: ByteArray) -> Unit) = signETH(unsignedTx.encodeRLP())
+        unsignedTx: Transaction,
+        callback: (
+            err: Exception?,
+            signedEncodedTransaction: ByteArray
+        ) -> Unit
+    ) = signETH(unsignedTx.encodeRLP())
     { err, sig ->
         if (err != null) {
             return@signETH callback(err, byteArrayOf())

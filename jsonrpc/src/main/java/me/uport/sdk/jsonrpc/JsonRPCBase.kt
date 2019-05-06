@@ -17,17 +17,18 @@ import java.math.BigInteger
  * Data class that encapsulates a basic JsonRPC request
  */
 open class JsonRpcBaseRequest(
-        @Json(name = "method")
-        val method: String,
+    @Json(name = "method")
+    val method: String,
 
-        @Json(name = "params")
-        val params: Collection<Any>,
+    @Json(name = "params")
+    val params: Collection<Any>,
 
-        @Json(name = "id")
-        val id: Int = 1,
+    @Json(name = "id")
+    val id: Int = 1,
 
-        @Json(name = "jsonrpc")
-        val jsonrpc: String = "2.0") {
+    @Json(name = "jsonrpc")
+    val jsonrpc: String = "2.0"
+) {
 
     /**
      * serializer for this [JsonRpcBaseRequest]
@@ -43,17 +44,18 @@ open class JsonRpcBaseRequest(
  * Data class that encapsulates a generic JsonRPC response
  */
 open class JsonRpcBaseResponse(
-        @Json(name = "result")
-        open val result: Any? = null,
+    @Json(name = "result")
+    open val result: Any? = null,
 
-        @Json(name = "error")
-        val error: JsonRpcError? = null,
+    @Json(name = "error")
+    val error: JsonRpcError? = null,
 
-        @Json(name = "id")
-        val id: Int = 1,
+    @Json(name = "id")
+    val id: Int = 1,
 
-        @Json(name = "jsonrpc")
-        val jsonrpc: String = "2.0") {
+    @Json(name = "jsonrpc")
+    val jsonrpc: String = "2.0"
+) {
 
     companion object {
 
@@ -82,23 +84,23 @@ const val JSON_RPC_INTERNAL_ERROR_CODE = -32603
  * Exception equivalent of a [JsonRpcError]
  */
 class JsonRpcException(
-        val code: Int = JSON_RPC_INTERNAL_ERROR_CODE,
-        override val message: String = "Internal error"
+    val code: Int = JSON_RPC_INTERNAL_ERROR_CODE,
+    override val message: String = "Internal error"
 ) : Exception(message)
 
 /**
  * Data class that encapsulates a log item for eth_getLogs
  */
 data class JsonRpcLogItem(
-        val address: String,
-        val topics: List<String>,
-        val data: String,
-        val blockNumber: BigInteger,
-        val transactionHash: String,
-        val transactionIndex: BigInteger,
-        val blockHash: String,
-        val logIndex: BigInteger,
-        val removed: Boolean
+    val address: String,
+    val topics: List<String>,
+    val data: String,
+    val blockNumber: BigInteger,
+    val transactionHash: String,
+    val transactionIndex: BigInteger,
+    val blockHash: String,
+    val logIndex: BigInteger,
+    val removed: Boolean
 )
 
 /**
@@ -116,7 +118,7 @@ class JsonRPCSerializers {
  * global used to hook into JSON (de)serialization
  */
 val moshi: Moshi = Moshi.Builder()
-        .add(JsonRPCSerializers())
-        .add(KotlinJsonAdapterFactory())
-        .build()
+    .add(JsonRPCSerializers())
+    .add(KotlinJsonAdapterFactory())
+    .build()
 

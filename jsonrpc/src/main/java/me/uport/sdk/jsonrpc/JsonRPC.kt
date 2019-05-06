@@ -34,11 +34,14 @@ open class JsonRPC(private val rpcEndpoint: String, val httpClient: HttpClient =
      */
     open suspend fun ethCall(address: String, data: String): String {
         val payloadRequest = JsonRpcBaseRequest(
-                method = "eth_call",
-                params = listOf(
-                        mapOf("to" to address,
-                                "data" to data),
-                        "latest")
+            method = "eth_call",
+            params = listOf(
+                mapOf(
+                    "to" to address,
+                    "data" to data
+                ),
+                "latest"
+            )
         ).toJson()
 
         return jsonRpcGenericCall(rpcEndpoint, payloadRequest)
@@ -59,27 +62,27 @@ open class JsonRPC(private val rpcEndpoint: String, val httpClient: HttpClient =
      * @throws IOException for network errors or unexpected reply formats
      */
     suspend fun getLogs(
-            address: String,
-            topics: List<Any?> = emptyList(),
-            fromBlock: BigInteger,
-            toBlock: BigInteger
+        address: String,
+        topics: List<Any?> = emptyList(),
+        fromBlock: BigInteger,
+        toBlock: BigInteger
     ): List<JsonRpcLogItem> {
         val payloadRequest = JsonRpcBaseRequest(
-                method = "eth_getLogs",
-                params = listOf(
-                        mapOf(
-                                "fromBlock" to fromBlock.toHexStringNoPrefix().prepend0xPrefix(),
-                                "toBlock" to toBlock.toHexStringNoPrefix().prepend0xPrefix(),
-                                "address" to address,
-                                "topics" to topics
-                        )
+            method = "eth_getLogs",
+            params = listOf(
+                mapOf(
+                    "fromBlock" to fromBlock.toHexStringNoPrefix().prepend0xPrefix(),
+                    "toBlock" to toBlock.toHexStringNoPrefix().prepend0xPrefix(),
+                    "address" to address,
+                    "topics" to topics
                 )
+            )
         ).toJson()
 
         val logItemsRaw = jsonRpcGenericCall(rpcEndpoint, payloadRequest)
         val type: ParameterizedType = Types.newParameterizedType(
-                List::class.java,
-                JsonRpcLogItem::class.java
+            List::class.java,
+            JsonRpcLogItem::class.java
         )
         val jsonAdapter: JsonAdapter<List<JsonRpcLogItem>> = moshi.adapter(type)
         val logs = jsonAdapter.lenient().fromJson(logItemsRaw) ?: emptyList()
@@ -98,8 +101,8 @@ open class JsonRPC(private val rpcEndpoint: String, val httpClient: HttpClient =
      */
     suspend fun getGasPrice(): BigInteger {
         val payloadRequest = JsonRpcBaseRequest(
-                method = "eth_gasPrice",
-                params = emptyList()
+            method = "eth_gasPrice",
+            params = emptyList()
         ).toJson()
 
         val priceHex = jsonRpcGenericCall(rpcEndpoint, payloadRequest)
@@ -121,8 +124,8 @@ open class JsonRPC(private val rpcEndpoint: String, val httpClient: HttpClient =
      */
     suspend fun getTransactionCount(address: String): BigInteger {
         val payloadRequest = JsonRpcBaseRequest(
-                method = "eth_getTransactionCount",
-                params = listOf(address, "latest")
+            method = "eth_getTransactionCount",
+            params = listOf(address, "latest")
         ).toJson()
 
         val nonceHex = jsonRpcGenericCall(rpcEndpoint, payloadRequest)
@@ -141,8 +144,8 @@ open class JsonRPC(private val rpcEndpoint: String, val httpClient: HttpClient =
      */
     suspend fun getAccountBalance(address: String): BigInteger {
         val payloadRequest = JsonRpcBaseRequest(
-                method = "eth_getBalance",
-                params = listOf(address, "latest")
+            method = "eth_getBalance",
+            params = listOf(address, "latest")
         ).toJson()
 
         val weiCountHex = jsonRpcGenericCall(rpcEndpoint, payloadRequest)
@@ -173,32 +176,32 @@ open class JsonRPC(private val rpcEndpoint: String, val httpClient: HttpClient =
      */
     data class TransactionReceipt(
 
-            @Json(name = "transactionHash")
-            val transactionHash: String? = "",
+        @Json(name = "transactionHash")
+        val transactionHash: String? = "",
 
-            @Json(name = "transactionIndex")
-            val transactionIndex: String? = "",
+        @Json(name = "transactionIndex")
+        val transactionIndex: String? = "",
 
-            @Json(name = "blockNumber")
-            val blockNumber: String? = "",
+        @Json(name = "blockNumber")
+        val blockNumber: String? = "",
 
-            @Json(name = "blockHash")
-            val blockHash: String? = "",
+        @Json(name = "blockHash")
+        val blockHash: String? = "",
 
-            @Json(name = "cumulativeGasUsed")
-            val cumulativeGasUsed: String? = "",
+        @Json(name = "cumulativeGasUsed")
+        val cumulativeGasUsed: String? = "",
 
-            @Json(name = "contractAddress")
-            val contractAddress: String? = null,
+        @Json(name = "contractAddress")
+        val contractAddress: String? = null,
 
-            @Json(name = "logs")
-            val logs: List<JsonRpcLogItem?>? = null,
+        @Json(name = "logs")
+        val logs: List<JsonRpcLogItem?>? = null,
 
-            @Json(name = "logsBloom")
-            val logsBloom: String? = "",
+        @Json(name = "logsBloom")
+        val logsBloom: String? = "",
 
-            @Json(name = "status")
-            val status: String? = "0x0"
+        @Json(name = "status")
+        val status: String? = "0x0"
     )
 
     /**
@@ -208,13 +211,13 @@ open class JsonRPC(private val rpcEndpoint: String, val httpClient: HttpClient =
      */
     suspend fun getTransactionReceipt(txHash: String): TransactionReceipt {
         val payloadRequest = JsonRpcBaseRequest(
-                method = "eth_getTransactionReceipt",
-                params = arrayListOf(txHash)
+            method = "eth_getTransactionReceipt",
+            params = arrayListOf(txHash)
         ).toJson()
 
         val rawResult = httpClient.urlPost(rpcEndpoint, payloadRequest)
         val parsedResponse = JsonRpcReceiptResponse.fromJson(rawResult)
-                ?: throw IOException("RPC endpoint response for transaction receipt query cannot be parsed")
+            ?: throw IOException("RPC endpoint response for transaction receipt query cannot be parsed")
         if (parsedResponse.error != null) {
             throw parsedResponse.error.toException()
         }
@@ -252,13 +255,13 @@ open class JsonRPC(private val rpcEndpoint: String, val httpClient: HttpClient =
      */
     suspend fun getTransactionByHash(txHash: String): TransactionInformation {
         val payloadRequest = JsonRpcBaseRequest(
-                method = "eth_getTransactionByHash",
-                params = arrayListOf(txHash)
+            method = "eth_getTransactionByHash",
+            params = arrayListOf(txHash)
         ).toJson()
 
         val rawResult = httpClient.urlPost(rpcEndpoint, payloadRequest)
         val parsedResponse = JsonRpcTxByHashResponse.fromJson(rawResult)
-                ?: throw IOException("RPC endpoint response for transaction information query cannot be parsed")
+            ?: throw IOException("RPC endpoint response for transaction information query cannot be parsed")
         if (parsedResponse.error != null) {
             throw parsedResponse.error.toException()
         }
@@ -274,38 +277,38 @@ open class JsonRPC(private val rpcEndpoint: String, val httpClient: HttpClient =
      * Data representing the transaction information
      */
     data class TransactionInformation(
-            @Json(name = "hash")
-            val txHash: String? = null,
+        @Json(name = "hash")
+        val txHash: String? = null,
 
-            @Json(name = "nonce")
-            val nonce: String? = null,
+        @Json(name = "nonce")
+        val nonce: String? = null,
 
-            @Json(name = "blockHash")
-            val blockHash: String? = null,
+        @Json(name = "blockHash")
+        val blockHash: String? = null,
 
-            @Json(name = "blockNumber")
-            val blockNumber: String? = null,
+        @Json(name = "blockNumber")
+        val blockNumber: String? = null,
 
-            @Json(name = "transactionIndex")
-            val transactionIndex: String? = null,
+        @Json(name = "transactionIndex")
+        val transactionIndex: String? = null,
 
-            @Json(name = "from")
-            val from: String = "",
+        @Json(name = "from")
+        val from: String = "",
 
-            @Json(name = "to")
-            val to: String = "",
+        @Json(name = "to")
+        val to: String = "",
 
-            @Json(name = "value")
-            val value: String = "",
+        @Json(name = "value")
+        val value: String = "",
 
-            @Json(name = "gas")
-            val gas: String = "",
+        @Json(name = "gas")
+        val gas: String = "",
 
-            @Json(name = "gasPrice")
-            val gasPrice: String = "",
+        @Json(name = "gasPrice")
+        val gasPrice: String = "",
 
-            @Json(name = "input")
-            val input: String = ""
+        @Json(name = "input")
+        val input: String = ""
     )
 
 
@@ -322,12 +325,12 @@ open class JsonRPC(private val rpcEndpoint: String, val httpClient: HttpClient =
      * @throws IOException for network errors or unexpected reply formats
      */
     suspend fun sendRawTransaction(
-            signedTransactionHex: String
+        signedTransactionHex: String
     ): String {
 
         val payloadRequest = JsonRpcBaseRequest(
-                method = "eth_sendRawTransaction",
-                params = listOf(signedTransactionHex)
+            method = "eth_sendRawTransaction",
+            params = listOf(signedTransactionHex)
         ).toJson()
 
         return jsonRpcGenericCall(rpcEndpoint, payloadRequest)
@@ -344,7 +347,7 @@ open class JsonRPC(private val rpcEndpoint: String, val httpClient: HttpClient =
     suspend fun jsonRpcGenericCall(url: String, payloadRequest: String): String {
         val rawResult = httpClient.urlPost(url, payloadRequest)
         val parsedResponse = JsonRpcBaseResponse.fromJson(rawResult)
-                ?: throw IOException("RPC endpoint response can't be parsed as JSON")
+            ?: throw IOException("RPC endpoint response can't be parsed as JSON")
         parsedResponse.error?.let {
             throw it.toException()
         }
