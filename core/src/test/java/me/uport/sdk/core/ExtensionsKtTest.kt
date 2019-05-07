@@ -29,18 +29,18 @@ class ExtensionsKtTest {
     @Test
     fun `base 64 works both ways`() {
         val strings = listOf(
-                "",
-                "f",
-                "fo",
-                "foo",
-                "foo ",
-                "foo b",
-                "foo ba",
-                "foo bar",
-                "foo bar ",
-                "foo bar b",
-                "foo bar ba",
-                "foo bar baz"
+            "",
+            "f",
+            "fo",
+            "foo",
+            "foo ",
+            "foo b",
+            "foo ba",
+            "foo bar",
+            "foo bar ",
+            "foo bar b",
+            "foo bar ba",
+            "foo bar baz"
         )
         strings.forEach {
             assertThat(String(it.toBase64().decodeBase64())).isEqualTo(it)

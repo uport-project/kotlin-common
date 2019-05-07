@@ -1,4 +1,4 @@
-@file:Suppress("unused", "TooManyFunctions")
+@file:Suppress("unused", "TooManyFunctions", "MagicNumber")
 
 package me.uport.sdk.signer
 
@@ -10,11 +10,7 @@ import org.kethereum.crypto.decompressKey
 import org.kethereum.extensions.toBigInteger
 import org.kethereum.extensions.toBytesPadded
 import org.kethereum.extensions.toHexStringNoPrefix
-import org.kethereum.model.ECKeyPair
-import org.kethereum.model.PRIVATE_KEY_SIZE
-import org.kethereum.model.PUBLIC_KEY_SIZE
-import org.kethereum.model.PublicKey
-import org.kethereum.model.SignatureData
+import org.kethereum.model.*
 import org.spongycastle.asn1.ASN1EncodableVector
 import org.spongycastle.asn1.ASN1Encoding
 import org.spongycastle.asn1.ASN1Integer
@@ -129,8 +125,8 @@ fun SignatureData.getDerEncoded(): String {
     v.add(ASN1Integer(this.r))
     v.add(ASN1Integer(this.s))
     return DERSequence(v)
-            .getEncoded(ASN1Encoding.DER)
-            .toNoPrefixHexString()
+        .getEncoded(ASN1Encoding.DER)
+        .toNoPrefixHexString()
 }
 
 /**
@@ -172,4 +168,4 @@ fun PublicKey.normalize(): PublicKey {
  * so a direct transformation would yield shorter ByteArray
  */
 fun BigInteger.keyToBase64(keySize: Int = PRIVATE_KEY_SIZE): String =
-        this.toBytesPadded(keySize).toBase64().padBase64()
+    this.toBytesPadded(keySize).toBase64().padBase64()
