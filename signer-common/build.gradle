@@ -16,6 +16,12 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
 
     api project(":core")
+    api "com.github.komputing.KEthereum:extensions:$kethereum_version"
+    api "com.github.komputing.KEthereum:model:$kethereum_version"
+    api "com.github.komputing.KEthereum:hashes:$kethereum_version"
+    implementation "com.madgag.spongycastle:core:$spongycastle_version"
+    api "com.github.komputing.KEthereum:crypto_impl_spongycastle:$kethereum_version"
+
 
     testImplementation "junit:junit:$junit_version"
     testImplementation "com.willowtreeapps.assertk:assertk-jvm:$assertk_version"

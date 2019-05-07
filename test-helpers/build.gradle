@@ -15,4 +15,6 @@ dependencies {
     implementation "com.willowtreeapps.assertk:assertk-jvm:$assertk_version"
 
     implementation project(":core")
+
+    testImplementation "junit:junit:$junit_version"
 }
