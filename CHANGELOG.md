@@ -1,3 +1,5 @@
+* 0.1.1
+    * maintenance - fix a bad test
 * 0.1.0
     * isolated signer-common module and library.
     * Signer import coordinates have changed to `me.uport.sdk.signer` 
