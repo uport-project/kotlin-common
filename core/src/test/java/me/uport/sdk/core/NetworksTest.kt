@@ -42,7 +42,7 @@ class NetworksTest {
     @Test
     fun `getting an unknown network throws`() {
         assertThat {
-            Networks.get("0x1234")
+            Networks.get("0x1badc0de")
         }.thrownError {
             isInstanceOf(IllegalStateException::class)
         }
