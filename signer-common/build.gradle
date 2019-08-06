@@ -7,7 +7,7 @@ project.ext.description = "Signer interface and default implementation for uPort
 
 //XXX: this is needed until https://github.com/komputing/KEthereum/issues/65 is fixed
 configurations.all {
-    exclude group: "com.github.walleth", module: "sha3"
+    exclude group: "com.github.walleth"
 }
 
 dependencies {
