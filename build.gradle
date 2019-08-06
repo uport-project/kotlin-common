@@ -20,7 +20,7 @@ buildscript {
         kmnid_version = "0.3.2"
         kethereum_version = "0.75.1"
 
-        current_release_version = "0.1.1"
+        current_release_version = "0.1.2"
     }
 
     repositories {
