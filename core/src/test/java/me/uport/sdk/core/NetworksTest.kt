@@ -46,7 +46,7 @@ class NetworksTest {
         assertThat {
             Networks["0x1badc0de"]
         }.thrownError {
-            isInstanceOf(IllegalStateException::class)
+            isInstanceOf(IllegalArgumentException::class)
         }
     }
 }
