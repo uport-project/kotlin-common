@@ -3,8 +3,6 @@
 package me.uport.sdk.core
 
 import me.uport.mnid.MNID
-import org.walleth.khex.clean0xPrefix
-import org.walleth.khex.prepend0xPrefix
 
 /**
  * Convenience singleton that holds URLs and addresses for different eth networks.
@@ -20,8 +18,6 @@ object Networks {
     private const val rinkebyId = "0x4"
     private const val kovanId = "0x2a"
     private const val DEFAULT_ERC1056_REGISTRY = "0xdca7ef03e98e0dc2b855be647c39abe984fcf21b"
-
-    private val NETWORK_CONFIG = emptyMap<String, EthNetwork>().toMutableMap()
 
     init {
         registerNetwork(
@@ -101,29 +97,6 @@ object Networks {
      */
     val kovan
         get() = get(kovanId)
-
-    /**
-     * Register an ETH network configuration.
-     * This overrides any previously registered network with the same `networkId`
-     */
-    fun registerNetwork(network: EthNetwork) {
-        val normalizedId = cleanId(network.networkId)
-
-        //TODO: check if [network] has necessary fields
-        NETWORK_CONFIG[normalizedId] = network
-    }
-
-    /**
-     * Gets an [EthNetwork] based on a [networkId]
-     */
-    fun get(networkId: String): EthNetwork {
-        val cleanNetId = cleanId(networkId)
-        return NETWORK_CONFIG[cleanNetId]
-            ?: NETWORK_CONFIG[networkId]
-            ?: throw IllegalStateException("network [$networkId] not configured")
-    }
-
-    private fun cleanId(id: String) = id.clean0xPrefix().trimStart('0').prepend0xPrefix()
 
 }
 

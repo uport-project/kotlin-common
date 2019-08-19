@@ -15,7 +15,7 @@ class NetworksTest {
         )
 
         assertThat(Networks.mainnet.rpcUrl).isEqualTo("http://localhost:8545")
-        assertThat(Networks.get("0x1").rpcUrl).isEqualTo("http://localhost:8545")
+        assertThat(Networks["0x1"].rpcUrl).isEqualTo("http://localhost:8545")
     }
 
     @Test
@@ -35,14 +35,14 @@ class NetworksTest {
         )
 
         //other fields match
-        assertThat(Networks.get("0x4321").ethrDidRegistry)
+        assertThat(Networks["0x4321"].ethrDidRegistry)
             .isEqualTo(Networks.mainnet.ethrDidRegistry)
     }
 
     @Test
     fun `getting an unknown network throws`() {
         assertThat {
-            Networks.get("0x1badc0de")
+            Networks["0x1badc0de"]
         }.thrownError {
             isInstanceOf(IllegalStateException::class)
         }
