@@ -9,7 +9,11 @@ import me.uport.mnid.MNID
  *
  * use the `registerNetwork` method to override defaults
  */
-object Networks {
+@Deprecated(
+    "Usage of the global Networks object is discouraged. Please use MultiNetworkConfig",
+    replaceWith = ReplaceWith("MultiNetworkConfig()")
+)
+object Networks : MultiNetworkConfig() {
 
     private const val defaultFaucetUrl = "https://sensui.uport.me/api/v1/fund/"
     private const val defaultTxRelayUrl = "https://sensui.uport.me/api/v2/relay/"

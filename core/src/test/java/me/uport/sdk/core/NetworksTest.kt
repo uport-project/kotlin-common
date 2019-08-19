@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package me.uport.sdk.core
 
 import assertk.assertThat
