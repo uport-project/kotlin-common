@@ -117,6 +117,7 @@ fun ByteArray.decodeJose(recoveryParam: Byte = 27): SignatureData {
 /**
  * Returns the DER encoding of the standard signature components
  */
+@Deprecated("This method will be removed in the next major release")
 fun SignatureData.getDerEncoded(): String {
 
     val v = ASN1EncodableVector()
