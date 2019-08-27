@@ -3,8 +3,8 @@
 package me.uport.sdk.core
 
 import me.uport.mnid.MNID
-import org.walleth.khex.clean0xPrefix
-import org.walleth.khex.prepend0xPrefix
+import org.komputing.khex.extensions.clean0xPrefix
+import org.komputing.khex.extensions.prepend0xPrefix
 
 /**
  * Convenience singleton that holds URLs and addresses for different eth networks.

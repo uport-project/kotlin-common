@@ -5,18 +5,16 @@ apply plugin: "com.jfrog.bintray"
 
 project.ext.description = "Signer interface and default implementation for uPort kotlin SDK"
 
-//XXX: this is needed until https://github.com/komputing/KEthereum/issues/65 is fixed
-configurations.all {
-    exclude group: "com.github.walleth"
-}
-
 dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
 
     api project(":core")
+    implementation "com.github.komputing.KHex:extensions-jvm:$khex_version"
     api "com.github.komputing.KEthereum:extensions:$kethereum_version"
+    api "com.github.komputing.KEthereum:functions:$kethereum_version"
+    api "com.github.komputing.KEthereum:crypto:$kethereum_version"
     api "com.github.komputing.KEthereum:model:$kethereum_version"
     api "com.github.komputing.KEthereum:hashes:$kethereum_version"
     implementation "com.madgag.spongycastle:core:$spongycastle_version"

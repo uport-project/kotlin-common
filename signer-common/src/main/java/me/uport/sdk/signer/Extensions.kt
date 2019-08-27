@@ -11,18 +11,16 @@ import org.kethereum.extensions.toBigInteger
 import org.kethereum.extensions.toBytesPadded
 import org.kethereum.extensions.toHexStringNoPrefix
 import org.kethereum.model.*
+import org.komputing.khex.extensions.clean0xPrefix
+import org.komputing.khex.extensions.prepend0xPrefix
+import org.komputing.khex.extensions.toNoPrefixHexString
 import org.spongycastle.asn1.ASN1EncodableVector
 import org.spongycastle.asn1.ASN1Encoding
 import org.spongycastle.asn1.ASN1Integer
 import org.spongycastle.asn1.DERSequence
-import org.walleth.khex.clean0xPrefix
-import org.walleth.khex.prepend0xPrefix
-import org.walleth.khex.toNoPrefixHexString
 import java.io.ByteArrayOutputStream
 import java.math.BigInteger
 import java.nio.charset.Charset
-import java.util.*
-
 
 /**
  * Converts a hex string to another hex string pre-padded with zeroes until it represents at least 32 bytes
@@ -89,7 +87,7 @@ fun SignatureData.getJoseEncoded(recoverable: Boolean = false): String {
     bos.write(this.r.toBytesPadded(SIG_COMPONENT_SIZE))
     bos.write(this.s.toBytesPadded(SIG_COMPONENT_SIZE))
     if (recoverable) {
-        bos.write(byteArrayOf((this.v - 27).toByte()))
+        bos.write(byteArrayOf((this.v.toByte() - 27).toByte()))
     }
     return bos.toByteArray().toBase64UrlSafe()
 }
@@ -105,15 +103,15 @@ fun String.decodeJose(recoveryParam: Byte = 27): SignatureData = this.decodeBase
  * @param recoveryParam can be used in case the signature is non recoverable to be added as recovery byte
  */
 fun ByteArray.decodeJose(recoveryParam: Byte = 27): SignatureData {
-    val rBytes = Arrays.copyOfRange(this, 0, SIG_COMPONENT_SIZE)
-    val sBytes = Arrays.copyOfRange(this, SIG_COMPONENT_SIZE, SIG_SIZE)
+    val rBytes = this.copyOfRange(0, SIG_COMPONENT_SIZE)
+    val sBytes = this.copyOfRange(SIG_COMPONENT_SIZE, SIG_SIZE)
     val v = if (this.size > SIG_SIZE)
         this[SIG_SIZE].let {
             if (it < 27) (it + 27).toByte() else it
         }
     else
         recoveryParam
-    return SignatureData(BigInteger(1, rBytes), BigInteger(1, sBytes), v)
+    return SignatureData(BigInteger(1, rBytes), BigInteger(1, sBytes), v.toInt().toBigInteger())
 }
 
 /**

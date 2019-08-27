@@ -5,11 +5,6 @@ apply plugin: "com.jfrog.bintray"
 
 project.ext.description = "core class definitions of the uPort kotlin SDK"
 
-//XXX: this is needed until https://github.com/komputing/KEthereum/issues/65 is fixed
-configurations.all {
-    exclude group: "com.github.walleth"
-}
-
 dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
@@ -17,8 +12,9 @@ dependencies {
 
     api "com.squareup.okhttp3:okhttp:$okhttp_version"
     api "com.github.uport-project:kmnid:$kmnid_version"
-    api "com.github.komputing.KEthereum:functions:$kethereum_version"
-    api "com.github.komputing.KEthereum:crypto:$kethereum_version"
+    implementation "com.github.komputing.KEthereum:functions:$kethereum_version"
+    implementation "com.github.komputing.KEthereum:crypto:$kethereum_version"
+    implementation "com.github.komputing.KHex:extensions-jvm:$khex_version"
     implementation "com.madgag.spongycastle:core:$spongycastle_version"
 
     testImplementation "junit:junit:$junit_version"
