@@ -17,9 +17,6 @@ dependencies {
 
     implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"
 
-    api "com.github.komputing.KEthereum:model:$kethereum_version"
-    api "com.github.komputing.KEthereum:rlp:$kethereum_version"
-    api "com.github.komputing.KEthereum:functions:$kethereum_version"
     api "com.github.komputing.KEthereum:extensions:$kethereum_version"
     implementation "com.github.komputing.KHex:extensions-jvm:$khex_version"
 
