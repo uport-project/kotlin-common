@@ -10,15 +10,15 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
 
-    api project(":core")
+    implementation project(":core")
     implementation "com.github.komputing.KHex:extensions-jvm:$khex_version"
-    api "com.github.komputing.KEthereum:extensions:$kethereum_version"
-    api "com.github.komputing.KEthereum:functions:$kethereum_version"
-    api "com.github.komputing.KEthereum:crypto:$kethereum_version"
-    api "com.github.komputing.KEthereum:model:$kethereum_version"
-    api "com.github.komputing.KEthereum:hashes:$kethereum_version"
+    implementation "com.github.komputing.KEthereum:extensions:$kethereum_version"
+    implementation "com.github.komputing.KEthereum:functions:$kethereum_version"
+    implementation "com.github.komputing.KEthereum:crypto:$kethereum_version"
+    implementation "com.github.komputing.KEthereum:model:$kethereum_version"
+    implementation "com.github.komputing.KEthereum:hashes:$kethereum_version"
     implementation "com.madgag.spongycastle:core:$spongycastle_version"
-    api "com.github.komputing.KEthereum:crypto_impl_spongycastle:$kethereum_version"
+    implementation "com.github.komputing.KEthereum:crypto_impl_spongycastle:$kethereum_version"
 
 
     testImplementation "junit:junit:$junit_version"

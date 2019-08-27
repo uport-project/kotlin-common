@@ -17,10 +17,10 @@ dependencies {
 
     implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"
 
-    api "com.github.komputing.KEthereum:extensions:$kethereum_version"
+    implementation "com.github.komputing.KEthereum:extensions:$kethereum_version"
     implementation "com.github.komputing.KHex:extensions-jvm:$khex_version"
 
-    api project(":core")
+    implementation project(":core")
 
     testImplementation "junit:junit:$junit_version"
     testImplementation "com.willowtreeapps.assertk:assertk-jvm:$assertk_version"
