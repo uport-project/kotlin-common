@@ -11,9 +11,6 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
 
     api "com.squareup.okhttp3:okhttp:$okhttp_version"
-    api "com.github.uport-project:kmnid:$kmnid_version"
-    implementation "com.github.komputing.KEthereum:functions:$kethereum_version"
-    implementation "com.github.komputing.KEthereum:crypto:$kethereum_version"
     implementation "com.github.komputing.KHex:extensions-jvm:$khex_version"
     implementation "com.madgag.spongycastle:core:$spongycastle_version"
 
