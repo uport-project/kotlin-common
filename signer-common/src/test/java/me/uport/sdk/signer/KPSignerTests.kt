@@ -7,7 +7,7 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import org.kethereum.extensions.hexToBigInteger
 import org.kethereum.model.SignatureData
-import org.walleth.khex.hexToByteArray
+import org.komputing.khex.extensions.hexToByteArray
 
 class KPSignerTests {
 
@@ -17,7 +17,7 @@ class KPSignerTests {
         val expectedSignature = SignatureData(
             r = "809e3b5ef25f4a3b039139e2fb70f70b636eba89c77a3b01e0c71c1a36d84126".hexToBigInteger(),
             s = "38524dfcd3e412cb6bc37f4594bbad104b6764bb14c64e42c699730106d1885a".hexToBigInteger(),
-            v = 28.toByte()
+            v = 28.toBigInteger()
         )
 
         val rawTransactionBytes =
@@ -38,7 +38,7 @@ class KPSignerTests {
         val referenceSignature = SignatureData(
             r = "6bcd81446183af193ca4a172d5c5c26345903b24770d90b5d790f74a9dec1f68".hexToBigInteger(),
             s = "e2b85b3c92c9b4f3cf58de46e7997d8efb6e14b2e532d13dfa22ee02f3a43d5d".hexToBigInteger(),
-            v = 28.toByte()
+            v = 28.toBigInteger()
         )
 
         val signer = KPSigner("65fc670d9351cb87d1f56702fb56a7832ae2aab3427be944ab8c9f2a0ab87960")
@@ -55,7 +55,7 @@ class KPSignerTests {
         val expectedSignature = SignatureData(
             r = "809e3b5ef25f4a3b039139e2fb70f70b636eba89c77a3b01e0c71c1a36d84126".hexToBigInteger(),
             s = "38524dfcd3e412cb6bc37f4594bbad104b6764bb14c64e42c699730106d1885a".hexToBigInteger(),
-            v = 28.toByte()
+            v = 28.toBigInteger()
         )
 
         val rawTransactionBytes =
@@ -74,7 +74,7 @@ class KPSignerTests {
         val referenceSignature = SignatureData(
             r = "6bcd81446183af193ca4a172d5c5c26345903b24770d90b5d790f74a9dec1f68".hexToBigInteger(),
             s = "e2b85b3c92c9b4f3cf58de46e7997d8efb6e14b2e532d13dfa22ee02f3a43d5d".hexToBigInteger(),
-            v = 28.toByte()
+            v = 28.toBigInteger()
         )
 
         val signer = KPSigner("65fc670d9351cb87d1f56702fb56a7832ae2aab3427be944ab8c9f2a0ab87960")

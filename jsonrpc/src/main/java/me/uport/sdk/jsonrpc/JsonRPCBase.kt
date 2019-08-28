@@ -9,7 +9,7 @@ import com.squareup.moshi.ToJson
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import org.kethereum.extensions.maybeHexToBigInteger
 import org.kethereum.extensions.toHexStringNoPrefix
-import org.walleth.khex.prepend0xPrefix
+import org.komputing.khex.extensions.prepend0xPrefix
 import java.math.BigInteger
 
 

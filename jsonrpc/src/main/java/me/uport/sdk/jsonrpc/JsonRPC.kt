@@ -8,7 +8,7 @@ import com.squareup.moshi.Types
 import me.uport.sdk.core.HttpClient
 import org.kethereum.extensions.hexToBigInteger
 import org.kethereum.extensions.toHexStringNoPrefix
-import org.walleth.khex.prepend0xPrefix
+import org.komputing.khex.extensions.prepend0xPrefix
 import java.io.IOException
 import java.lang.reflect.ParameterizedType
 import java.math.BigInteger
