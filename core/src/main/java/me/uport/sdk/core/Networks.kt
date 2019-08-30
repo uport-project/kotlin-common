@@ -2,9 +2,8 @@
 
 package me.uport.sdk.core
 
-import me.uport.mnid.MNID
-import org.walleth.khex.clean0xPrefix
-import org.walleth.khex.prepend0xPrefix
+import org.komputing.khex.extensions.clean0xPrefix
+import org.komputing.khex.extensions.prepend0xPrefix
 
 /**
  * Convenience singleton that holds URLs and addresses for different eth networks.
@@ -31,7 +30,8 @@ object Networks {
                 rpcUrl = "https://mainnet.infura.io/v3/e72b472993ff46d3b5b88faa47214d7f",
                 ethrDidRegistry = DEFAULT_ERC1056_REGISTRY,
                 explorerUrl = "https://etherscan.io",
-                uPortRegistry = MNID.encode(mainnetId, "0xab5c8051b9a1df1aab0149f8b0630848b7ecabf6"),
+                // MNID.encode(mainnetId, "0xab5c8051b9a1df1aab0149f8b0630848b7ecabf6"),
+                uPortRegistry = "2ngV6QowStW3ebKXYUhy43wCqeLXcuTfHj2",
                 faucetUrl = defaultFaucetUrl,
                 relayUrl = defaultTxRelayUrl,
                 txRelayAddress = "0xec2642cd5a47fd5cca2a8a280c3b5f88828aa578"
@@ -44,7 +44,8 @@ object Networks {
                 rpcUrl = "https://rinkeby.infura.io/v3/e72b472993ff46d3b5b88faa47214d7f",
                 ethrDidRegistry = DEFAULT_ERC1056_REGISTRY,
                 explorerUrl = "https://rinkeby.etherscan.io",
-                uPortRegistry = MNID.encode(rinkebyId, "0x2cc31912b2b0f3075a87b3640923d45a26cef3ee"),
+                //MNID.encode(rinkebyId, "0x2cc31912b2b0f3075a87b3640923d45a26cef3ee"),
+                uPortRegistry = "2ogxWTKKfy6kwfqdgdEE6GCdoFD4vm4YRZe",
                 faucetUrl = "https://api.uport.me/sensui/fund/",
                 relayUrl = "https://api.uport.me/sensui/relay/",
                 txRelayAddress = "0xda8c6dce9e9a85e6f9df7b09b2354da44cb48331"
@@ -57,7 +58,8 @@ object Networks {
                 rpcUrl = "https://ropsten.infura.io/v3/e72b472993ff46d3b5b88faa47214d7f",
                 ethrDidRegistry = DEFAULT_ERC1056_REGISTRY,
                 explorerUrl = "https://ropsten.etherscan.io",
-                uPortRegistry = MNID.encode(ropstenId, "0x41566e3a081f5032bdcad470adb797635ddfe1f0"),
+                //MNID.encode(ropstenId, "0x41566e3a081f5032bdcad470adb797635ddfe1f0"),
+                uPortRegistry = "2oKVhUttUcwaFAopRBGA21NDJoYcBb3a6iz",
                 faucetUrl = defaultFaucetUrl,
                 relayUrl = defaultTxRelayUrl,
                 txRelayAddress = "0xa5e04cf2942868f5a66b9f7db790b8ab662039d5"
@@ -70,7 +72,8 @@ object Networks {
                 rpcUrl = "https://kovan.infura.io/v3/e72b472993ff46d3b5b88faa47214d7f",
                 ethrDidRegistry = DEFAULT_ERC1056_REGISTRY,
                 explorerUrl = "https://kovan.etherscan.io",
-                uPortRegistry = MNID.encode(kovanId, "0x5f8e9351dc2d238fb878b6ae43aa740d62fc9758"),
+                //MNID.encode(kovanId, "0x5f8e9351dc2d238fb878b6ae43aa740d62fc9758"),
+                uPortRegistry = "354S1QuCzkmKoQ3ADSLp1KtqAe8gZ74F9am",
                 faucetUrl = defaultFaucetUrl,
                 relayUrl = defaultTxRelayUrl,
                 txRelayAddress = "0xa9235151d3afa7912e9091ab76a36cbabe219a0c"

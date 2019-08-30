@@ -1,3 +1,9 @@
+* 0.2.0
+    * update to kethereum 0.76.1 [#5](https://github.com/uport-project/kotlin-common/pull/5)
+    * [breaking] isolate implementation details for each module (#5)
+        * may require adjusting imports
+    * removed all direct references to java classes in production code (#5)
+
 * 0.1.2
     * maintenance - add test coverage
     
