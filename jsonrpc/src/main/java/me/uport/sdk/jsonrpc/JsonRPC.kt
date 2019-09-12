@@ -117,6 +117,27 @@ open class JsonRPC(
     }
 
 
+
+//=============================
+// eth_chainId
+//=============================
+
+    /**
+     * Obtains the chainID as reported by the node using EIP-695 `eth_chainId` method
+     *
+     * See also: http://eips.ethereum.org/EIPS/eip-695
+     */
+    suspend fun getChainId(): BigInteger {
+        val payloadRequest = JsonRpcRequest(
+            method = "eth_chainId",
+            params = emptyList<String>()
+        ).toJson()
+
+        val chainId = jsonRpcGenericCall(rpcEndpoint, payloadRequest)
+        return chainId.hexToBigInteger()
+    }
+
+
 //=============================
 //eth_getTransactionCount
 //=============================

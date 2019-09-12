@@ -332,4 +332,19 @@ class JsonRPCTest {
 
         assertThat(result).isEqualTo("0x000000000000000000000000000000000000000000000000000000000044dd7f")
     }
+
+
+    @Test
+    fun `can getChain ID`() = runBlocking {
+        val httpClient = mockk<HttpClient>()
+        val rpc = spyk(JsonRPC(Networks.rinkeby.rpcUrl, httpClient))
+
+        coEvery {
+            httpClient.urlPost(any(), any())
+        } returns """{"jsonrpc":"2.0","id":1,"result":"0x4"}"""
+
+        val result = rpc.getChainId()
+
+        assertThat(result).isEqualTo(4.toBigInteger())
+    }
 }
