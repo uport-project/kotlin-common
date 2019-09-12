@@ -4,7 +4,6 @@ import assertk.assertThat
 import assertk.assertions.hasMessage
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
-import assertk.assertions.matchesPredicate
 import io.mockk.CapturingSlot
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -16,6 +15,7 @@ import me.uport.sdk.jsonrpc.model.JsonRpcLogItem
 import me.uport.sdk.jsonrpc.model.TransactionInformation
 import me.uport.sdk.jsonrpc.model.TransactionReceipt
 import me.uport.sdk.jsonrpc.model.exceptions.JsonRpcException
+import me.uport.sdk.jsonrpc.model.exceptions.JsonRpcInvalidArgumentException
 import me.uport.sdk.jsonrpc.model.exceptions.TransactionNotFoundException
 import me.uport.sdk.testhelpers.coAssert
 import org.junit.Test
@@ -123,10 +123,7 @@ class JsonRPCTest {
         coAssert {
             rpc.getTransactionByHash(txHash)
         }.thrownError {
-            isInstanceOf(JsonRpcException::class)
-            matchesPredicate {
-                (it as JsonRpcException).code == -32602
-            }
+            isInstanceOf(JsonRpcInvalidArgumentException::class)
         }
     }
 
