@@ -1,7 +1,10 @@
-@file:Suppress("LiftReturnOrAssignment", "UnnecessaryVariable")
+@file:Suppress("LiftReturnOrAssignment", "UnnecessaryVariable", "EXPERIMENTAL_API_USAGE")
 
 package me.uport.sdk.jsonrpc
 
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.list
+import kotlinx.serialization.serializer
 import me.uport.sdk.core.HttpClient
 import me.uport.sdk.jsonrpc.model.JsonRpcLogItem
 import me.uport.sdk.jsonrpc.model.TransactionInformation
@@ -11,10 +14,7 @@ import me.uport.sdk.jsonrpc.model.exceptions.TransactionNotFoundException
 import me.uport.sdk.jsonrpc.model.request.EthCallParams
 import me.uport.sdk.jsonrpc.model.request.JsonRpcLogsRequestParams
 import me.uport.sdk.jsonrpc.model.request.JsonRpcRequest
-import me.uport.sdk.jsonrpc.model.response.JsonRpcLogsResponse
-import me.uport.sdk.jsonrpc.model.response.JsonRpcReceiptResponse
-import me.uport.sdk.jsonrpc.model.response.JsonRpcStringResponse
-import me.uport.sdk.jsonrpc.model.response.JsonRpcTxByHashResponse
+import me.uport.sdk.jsonrpc.model.response.JsonRpcResponse
 import org.kethereum.extensions.hexToBigInteger
 import java.io.IOException
 import java.math.BigInteger
@@ -90,7 +90,11 @@ open class JsonRPC(
 
         val rawResult = httpClient.urlPost(rpcEndpoint, payloadRequest)
 
-        val parsedResponse = JsonRpcLogsResponse.fromJson(rawResult)
+        val parsedResponse = Json.nonstrict.parse(
+            JsonRpcResponse.serializer(JsonRpcLogItem.serializer().list),
+            rawResult
+        )
+
         parsedResponse.error?.let {
             throw it.toException()
         }
@@ -115,7 +119,6 @@ open class JsonRPC(
         val priceHex = jsonRpcGenericCall(rpcEndpoint, payloadRequest)
         return priceHex.hexToBigInteger()
     }
-
 
 
 //=============================
@@ -198,7 +201,11 @@ open class JsonRPC(
 
         val rawResult = httpClient.urlPost(rpcEndpoint, payloadRequest)
 
-        val parsedResponse = JsonRpcReceiptResponse.fromJson(rawResult)
+        val parsedResponse = Json.nonstrict.parse(
+            JsonRpcResponse.serializer(TransactionReceipt.serializer()),
+            rawResult
+        )
+
         if (parsedResponse.error != null) {
             throw parsedResponse.error.toException()
         }
@@ -228,7 +235,11 @@ open class JsonRPC(
 
         val rawResult = httpClient.urlPost(rpcEndpoint, payloadRequest)
 
-        val parsedResponse = JsonRpcTxByHashResponse.fromJson(rawResult)
+        val parsedResponse = Json.nonstrict.parse(
+            JsonRpcResponse.serializer(TransactionInformation.serializer()),
+            rawResult
+        )
+
         if (parsedResponse.error != null) {
             throw parsedResponse.error.toException()
         }
@@ -267,7 +278,7 @@ open class JsonRPC(
 
     /**
      * Make a base JsonRPCRequest to the [url] with the given [payloadRequest]
-     * and attempt to parse the response string into a [JsonRpcStringResponse]
+     * and attempt to parse the response body into a [JsonRpcResponse]
      * @throws IOException if response is null or if it can't be parsed from JSON
      * @throws JsonRpcException if the response was parsed and an error field was present
      *
@@ -275,10 +286,14 @@ open class JsonRPC(
      */
     private suspend fun jsonRpcGenericCall(url: String, payloadRequest: String): String {
         val rawResult = httpClient.urlPost(url, payloadRequest)
-        val parsedResponse = JsonRpcStringResponse.fromJson(rawResult)
-        parsedResponse.error?.let {
-            throw it.toException()
-        }
+
+        val parsedResponse = Json.nonstrict.parse(
+            JsonRpcResponse.serializer(String.serializer()),
+            rawResult
+        )
+
+        parsedResponse.error?.let { throw it.toException() }
+
         return parsedResponse.result.toString()
     }
 
