@@ -1,3 +1,8 @@
+* 0.3.0
+    * refactor - replace moshi with kotlinx.serialization ( #6 )
+    * feature - add ethChainId  ( f658925f )
+    * feature - throw more specific JsonRpcInvalidArgumentException ( a79b3a01 )
+    
 * 0.2.0
     * update to kethereum 0.76.1 [#5](https://github.com/uport-project/kotlin-common/pull/5)
     * [breaking] isolate implementation details for each module (#5)
