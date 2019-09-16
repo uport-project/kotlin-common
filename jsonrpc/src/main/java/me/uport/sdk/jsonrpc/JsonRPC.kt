@@ -1,22 +1,31 @@
-@file:Suppress("LiftReturnOrAssignment", "UnnecessaryVariable")
+@file:Suppress("LiftReturnOrAssignment", "UnnecessaryVariable", "EXPERIMENTAL_API_USAGE")
 
 package me.uport.sdk.jsonrpc
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonAdapter
-import com.squareup.moshi.Types
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.list
+import kotlinx.serialization.serializer
 import me.uport.sdk.core.HttpClient
+import me.uport.sdk.jsonrpc.model.JsonRpcLogItem
+import me.uport.sdk.jsonrpc.model.TransactionInformation
+import me.uport.sdk.jsonrpc.model.TransactionReceipt
+import me.uport.sdk.jsonrpc.model.exceptions.JsonRpcException
+import me.uport.sdk.jsonrpc.model.exceptions.TransactionNotFoundException
+import me.uport.sdk.jsonrpc.model.request.EthCallParams
+import me.uport.sdk.jsonrpc.model.request.JsonRpcLogsRequestParams
+import me.uport.sdk.jsonrpc.model.request.JsonRpcRequest
+import me.uport.sdk.jsonrpc.model.response.JsonRpcResponse
 import org.kethereum.extensions.hexToBigInteger
-import org.kethereum.extensions.toHexStringNoPrefix
-import org.komputing.khex.extensions.prepend0xPrefix
 import java.io.IOException
-import java.lang.reflect.ParameterizedType
 import java.math.BigInteger
 
 /**
  * Partial wrapper for JsonRPC methods supported by ethereum nodes.
  */
-open class JsonRPC(private val rpcEndpoint: String, val httpClient: HttpClient = HttpClient()) {
+open class JsonRPC(
+    private val rpcEndpoint: String,
+    private val httpClient: HttpClient = HttpClient()
+) {
 
 //=============================
 // eth_call
@@ -33,12 +42,12 @@ open class JsonRPC(private val rpcEndpoint: String, val httpClient: HttpClient =
      * @throws IOException for network errors or unexpected reply formats
      */
     open suspend fun ethCall(address: String, data: String): String {
-        val payloadRequest = JsonRpcBaseRequest(
+        val payloadRequest = JsonRpcRequest(
             method = "eth_call",
             params = listOf(
-                mapOf(
-                    "to" to address,
-                    "data" to data
+                EthCallParams(
+                    to = address,
+                    data = data
                 ),
                 "latest"
             )
@@ -63,31 +72,33 @@ open class JsonRPC(private val rpcEndpoint: String, val httpClient: HttpClient =
      */
     suspend fun getLogs(
         address: String,
-        topics: List<Any?> = emptyList(),
+        topics: List<String?> = emptyList(),
         fromBlock: BigInteger,
         toBlock: BigInteger
     ): List<JsonRpcLogItem> {
-        val payloadRequest = JsonRpcBaseRequest(
+        val payloadRequest = JsonRpcRequest(
             method = "eth_getLogs",
             params = listOf(
-                mapOf(
-                    "fromBlock" to fromBlock.toHexStringNoPrefix().prepend0xPrefix(),
-                    "toBlock" to toBlock.toHexStringNoPrefix().prepend0xPrefix(),
-                    "address" to address,
-                    "topics" to topics
+                JsonRpcLogsRequestParams(
+                    fromBlock,
+                    toBlock,
+                    address,
+                    topics
                 )
             )
         ).toJson()
 
-        val logItemsRaw = jsonRpcGenericCall(rpcEndpoint, payloadRequest)
-        val type: ParameterizedType = Types.newParameterizedType(
-            List::class.java,
-            JsonRpcLogItem::class.java
-        )
-        val jsonAdapter: JsonAdapter<List<JsonRpcLogItem>> = moshi.adapter(type)
-        val logs = jsonAdapter.lenient().fromJson(logItemsRaw) ?: emptyList()
-        return logs
+        val rawResult = httpClient.urlPost(rpcEndpoint, payloadRequest)
 
+        val parsedResponse = Json.nonstrict.parse(
+            JsonRpcResponse.serializer(JsonRpcLogItem.serializer().list),
+            rawResult
+        )
+
+        parsedResponse.error?.let {
+            throw it.toException()
+        }
+        return parsedResponse.result ?: emptyList()
     }
 
 //=============================
@@ -100,13 +111,33 @@ open class JsonRPC(private val rpcEndpoint: String, val httpClient: HttpClient =
      * See also: https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_gasPrice
      */
     suspend fun getGasPrice(): BigInteger {
-        val payloadRequest = JsonRpcBaseRequest(
+        val payloadRequest = JsonRpcRequest(
             method = "eth_gasPrice",
-            params = emptyList()
+            params = emptyList<String>()
         ).toJson()
 
         val priceHex = jsonRpcGenericCall(rpcEndpoint, payloadRequest)
         return priceHex.hexToBigInteger()
+    }
+
+
+//=============================
+// eth_chainId
+//=============================
+
+    /**
+     * Obtains the chainID as reported by the node using EIP-695 `eth_chainId` method
+     *
+     * See also: http://eips.ethereum.org/EIPS/eip-695
+     */
+    suspend fun getChainId(): BigInteger {
+        val payloadRequest = JsonRpcRequest(
+            method = "eth_chainId",
+            params = emptyList<String>()
+        ).toJson()
+
+        val chainId = jsonRpcGenericCall(rpcEndpoint, payloadRequest)
+        return chainId.hexToBigInteger()
     }
 
 
@@ -123,7 +154,7 @@ open class JsonRPC(private val rpcEndpoint: String, val httpClient: HttpClient =
      * FIXME: add support for pending transactions
      */
     suspend fun getTransactionCount(address: String): BigInteger {
-        val payloadRequest = JsonRpcBaseRequest(
+        val payloadRequest = JsonRpcRequest(
             method = "eth_getTransactionCount",
             params = listOf(address, "latest")
         ).toJson()
@@ -143,7 +174,7 @@ open class JsonRPC(private val rpcEndpoint: String, val httpClient: HttpClient =
      * See also: https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_getBalance
      */
     suspend fun getAccountBalance(address: String): BigInteger {
-        val payloadRequest = JsonRpcBaseRequest(
+        val payloadRequest = JsonRpcRequest(
             method = "eth_getBalance",
             params = listOf(address, "latest")
         ).toJson()
@@ -158,66 +189,23 @@ open class JsonRPC(private val rpcEndpoint: String, val httpClient: HttpClient =
 //=============================
 
     /**
-     * Wrapper for a transaction receipt response
-     */
-    class JsonRpcReceiptResponse(override val result: TransactionReceipt?) : JsonRpcBaseResponse() {
-
-        companion object {
-            private val adapter by lazy {
-                moshi.adapter<JsonRpcReceiptResponse>(JsonRpcReceiptResponse::class.java)
-            }
-
-            fun fromJson(json: String) = adapter.fromJson(json)
-        }
-    }
-
-    /**
-     * Data representing a Transaction receipt
-     */
-    data class TransactionReceipt(
-
-        @Json(name = "transactionHash")
-        val transactionHash: String? = "",
-
-        @Json(name = "transactionIndex")
-        val transactionIndex: String? = "",
-
-        @Json(name = "blockNumber")
-        val blockNumber: String? = "",
-
-        @Json(name = "blockHash")
-        val blockHash: String? = "",
-
-        @Json(name = "cumulativeGasUsed")
-        val cumulativeGasUsed: String? = "",
-
-        @Json(name = "contractAddress")
-        val contractAddress: String? = null,
-
-        @Json(name = "logs")
-        val logs: List<JsonRpcLogItem?>? = null,
-
-        @Json(name = "logsBloom")
-        val logsBloom: String? = "",
-
-        @Json(name = "status")
-        val status: String? = "0x0"
-    )
-
-    /**
      * Obtains a transaction receipt for a given [txHash]
      *
      * See also: https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_getTransactionReceipt
      */
     suspend fun getTransactionReceipt(txHash: String): TransactionReceipt {
-        val payloadRequest = JsonRpcBaseRequest(
+        val payloadRequest = JsonRpcRequest(
             method = "eth_getTransactionReceipt",
-            params = arrayListOf(txHash)
+            params = listOf(txHash)
         ).toJson()
 
         val rawResult = httpClient.urlPost(rpcEndpoint, payloadRequest)
-        val parsedResponse = JsonRpcReceiptResponse.fromJson(rawResult)
-            ?: throw IOException("RPC endpoint response for transaction receipt query cannot be parsed")
+
+        val parsedResponse = Json.nonstrict.parse(
+            JsonRpcResponse.serializer(TransactionReceipt.serializer()),
+            rawResult
+        )
+
         if (parsedResponse.error != null) {
             throw parsedResponse.error.toException()
         }
@@ -235,33 +223,23 @@ open class JsonRPC(private val rpcEndpoint: String, val httpClient: HttpClient =
 //=============================
 
     /**
-     * wrapper for transaction information responses
-     */
-    class JsonRpcTxByHashResponse(override val result: TransactionInformation?) : JsonRpcBaseResponse() {
-
-        companion object {
-            private val adapter by lazy {
-                moshi.adapter<JsonRpcTxByHashResponse>(JsonRpcTxByHashResponse::class.java)
-            }
-
-            fun fromJson(json: String) = adapter.fromJson(json)
-        }
-    }
-
-    /**
      * Obtains the transaction information corresponding to a given [txHash]
      *
      * See also: https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_getTransactionByHash
      */
     suspend fun getTransactionByHash(txHash: String): TransactionInformation {
-        val payloadRequest = JsonRpcBaseRequest(
+        val payloadRequest = JsonRpcRequest(
             method = "eth_getTransactionByHash",
             params = arrayListOf(txHash)
         ).toJson()
 
         val rawResult = httpClient.urlPost(rpcEndpoint, payloadRequest)
-        val parsedResponse = JsonRpcTxByHashResponse.fromJson(rawResult)
-            ?: throw IOException("RPC endpoint response for transaction information query cannot be parsed")
+
+        val parsedResponse = Json.nonstrict.parse(
+            JsonRpcResponse.serializer(TransactionInformation.serializer()),
+            rawResult
+        )
+
         if (parsedResponse.error != null) {
             throw parsedResponse.error.toException()
         }
@@ -272,44 +250,6 @@ open class JsonRPC(private val rpcEndpoint: String, val httpClient: HttpClient =
             throw TransactionNotFoundException(txHash)
         }
     }
-
-    /**
-     * Data representing the transaction information
-     */
-    data class TransactionInformation(
-        @Json(name = "hash")
-        val txHash: String? = null,
-
-        @Json(name = "nonce")
-        val nonce: String? = null,
-
-        @Json(name = "blockHash")
-        val blockHash: String? = null,
-
-        @Json(name = "blockNumber")
-        val blockNumber: String? = null,
-
-        @Json(name = "transactionIndex")
-        val transactionIndex: String? = null,
-
-        @Json(name = "from")
-        val from: String = "",
-
-        @Json(name = "to")
-        val to: String = "",
-
-        @Json(name = "value")
-        val value: String = "",
-
-        @Json(name = "gas")
-        val gas: String = "",
-
-        @Json(name = "gasPrice")
-        val gasPrice: String = "",
-
-        @Json(name = "input")
-        val input: String = ""
-    )
 
 
 //=============================
@@ -328,7 +268,7 @@ open class JsonRPC(private val rpcEndpoint: String, val httpClient: HttpClient =
         signedTransactionHex: String
     ): String {
 
-        val payloadRequest = JsonRpcBaseRequest(
+        val payloadRequest = JsonRpcRequest(
             method = "eth_sendRawTransaction",
             params = listOf(signedTransactionHex)
         ).toJson()
@@ -338,19 +278,22 @@ open class JsonRPC(private val rpcEndpoint: String, val httpClient: HttpClient =
 
     /**
      * Make a base JsonRPCRequest to the [url] with the given [payloadRequest]
-     * and attempt to parse the response string into a [JsonRpcBaseResponse]
+     * and attempt to parse the response body into a [JsonRpcResponse]
      * @throws IOException if response is null or if it can't be parsed from JSON
      * @throws JsonRpcException if the response was parsed and an error field was present
      *
      * @hide
      */
-    suspend fun jsonRpcGenericCall(url: String, payloadRequest: String): String {
+    private suspend fun jsonRpcGenericCall(url: String, payloadRequest: String): String {
         val rawResult = httpClient.urlPost(url, payloadRequest)
-        val parsedResponse = JsonRpcBaseResponse.fromJson(rawResult)
-            ?: throw IOException("RPC endpoint response can't be parsed as JSON")
-        parsedResponse.error?.let {
-            throw it.toException()
-        }
+
+        val parsedResponse = Json.nonstrict.parse(
+            JsonRpcResponse.serializer(String.serializer()),
+            rawResult
+        )
+
+        parsedResponse.error?.let { throw it.toException() }
+
         return parsedResponse.result.toString()
     }
 
