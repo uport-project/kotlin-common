@@ -5,6 +5,8 @@
 
 Core interface definitions and default implementations for uPort kotlin SDK classes.
 
+[FAQ and helpdesk support](http://bit.ly/uPort_helpdesk)
+
 ## Modules
 
 ### core
