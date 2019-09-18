@@ -1,3 +1,6 @@
+* 0.3.1
+    * refactor - simplify imports, using lowercase coordinates for komputing libs ( 6a827d05 )
+    
 * 0.3.0
     * refactor - replace moshi with kotlinx.serialization ( #6 )
     * feature - add ethChainId  ( f658925f )

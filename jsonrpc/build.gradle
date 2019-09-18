@@ -15,12 +15,12 @@ compileKotlin {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
-    implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime:$kotlin_serialization_version"
+    api "org.jetbrains.kotlinx:kotlinx-serialization-runtime:$kotlin_serialization_version"
 
-    implementation "com.github.komputing.KEthereum:extensions:$kethereum_version"
-    implementation "com.github.komputing.KHex:extensions-jvm:$khex_version"
+    api "com.github.komputing.kethereum:extensions:$kethereum_version"
+    api "com.github.komputing.khex:extensions-jvm:$khex_version"
 
-    implementation project(":core")
+    api project(":core")
 
     testImplementation "junit:junit:$junit_version"
     testImplementation "com.willowtreeapps.assertk:assertk-jvm:$assertk_version"
