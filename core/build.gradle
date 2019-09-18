@@ -11,7 +11,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
 
     implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
-    implementation "com.github.komputing.KHex:extensions-jvm:$khex_version"
+    api "com.github.komputing.khex:extensions-jvm:$khex_version"
     implementation "com.madgag.spongycastle:core:$spongycastle_version"
 
     testImplementation "junit:junit:$junit_version"
