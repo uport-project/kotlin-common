@@ -16,7 +16,7 @@ buildscript {
         okhttp_version = "3.14.1"
 
         spongycastle_version = "1.58.0.0"
-        kethereum_version = "0.76.1"
+        kethereum_version = "0.76.2"
         khex_version = "1.0.0-RC3"
 
         current_release_version = "0.3.1"
