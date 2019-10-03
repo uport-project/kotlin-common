@@ -1,3 +1,6 @@
+* 0.3.2
+    * build - bump kethereum to 0.76.2 ( 61d7582d )
+
 * 0.3.1
     * refactor - simplify imports, using lowercase coordinates for komputing libs ( 6a827d05 )
     
