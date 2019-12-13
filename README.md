@@ -32,6 +32,9 @@ Networks.registerNetwork(
     )
 )
 
+//register all defaults using infura
+Networks.registerAllNetworksWithInfura("<YOUR INFURA ID>")
+
 //use testnet
 val net = Networks.get("0x1234")
 
