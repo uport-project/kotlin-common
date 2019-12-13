@@ -5,6 +5,8 @@
 
 Core interface definitions and default implementations for uPort kotlin SDK classes.
 
+[FAQ and helpdesk support](http://bit.ly/uPort_helpdesk)
+
 ## Modules
 
 ### core
@@ -29,6 +31,9 @@ Networks.registerNetwork(
         ethrDidRegistry = "0xdca7ef03e98e0dc2b855be647c39abe984fcf21b"
     )
 )
+
+//register all defaults using infura
+Networks.registerAllNetworksWithInfura("<YOUR INFURA ID>")
 
 //use testnet
 val net = Networks.get("0x1234")
