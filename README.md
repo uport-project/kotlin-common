@@ -32,18 +32,18 @@ Networks.registerNetwork(
     )
 )
 
-//register all defaults using infura
+//register all popular public networks using your infura project ID
 Networks.registerAllNetworksWithInfura("<YOUR INFURA ID>")
 
 //use testnet
 val net = Networks.get("0x1234")
-
+or
+val net = Networks.get("local")
 
 // override defaults
 Networks.registerNetwork(
     Networks.mainnet.copy(rpcUrl = "http://localhost:8545")
 )
-
 assertTrue(Networks.mainnet.rpcUrl == "http://localhost:8545")
 
 ```
@@ -92,7 +92,7 @@ allprojects {
 In your module `build.gradle` file, add:
 
 ```groovy
-def uport_kotlin_common_version = "0.3.2"
+def uport_kotlin_common_version = "0.4.0"
 dependencies {
     //...
     // core lib
