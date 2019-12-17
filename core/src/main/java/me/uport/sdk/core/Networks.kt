@@ -136,7 +136,7 @@ object Networks {
      */
     private fun getNetworkByName(name: String): EthNetwork? {
         for ((_, value) in NETWORK_CONFIG) {
-            if (value.name.toLowerCase() === name.toLowerCase()) {
+            if (value.name.toLowerCase() == name.toLowerCase()) {
                 return value
             }
         }

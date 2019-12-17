@@ -52,18 +52,14 @@ class NetworksTest {
     }
 
     @Test
+    fun `can find a registered network using the different case name`() {
+        assertThat(Networks.get("MainNet")).isEqualTo(Networks.mainnet)
+    }
+
+        @Test
     fun `throws error if the network name does not match`() {
         assertThat {
             Networks.get("manet")
-        }.thrownError {
-            isInstanceOf(IllegalStateException::class)
-        }
-    }
-
-    @Test
-    fun `throws error if the network name cases does not match`() {
-        assertThat {
-            Networks.get("Mainnet")
         }.thrownError {
             isInstanceOf(IllegalStateException::class)
         }
