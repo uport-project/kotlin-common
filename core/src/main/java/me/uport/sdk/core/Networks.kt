@@ -121,13 +121,26 @@ object Networks {
     }
 
     /**
-     * Gets an [EthNetwork] based on a [networkId]
+     * Gets an [EthNetwork] based on a [networkId] or [name]
      */
-    fun get(networkId: String): EthNetwork {
-        val cleanNetId = cleanId(networkId)
+    fun get(nameOrId: String): EthNetwork {
+        val cleanNetId = cleanId(nameOrId)
         return NETWORK_CONFIG[cleanNetId]
-            ?: NETWORK_CONFIG[networkId]
-            ?: throw IllegalStateException("network [$networkId] not configured")
+            ?: NETWORK_CONFIG[nameOrId]
+            ?: getNetworkByName(nameOrId)
+            ?: throw IllegalStateException("network [$nameOrId] not configured")
+    }
+
+    /**
+     * Searches for an [EthNetwork] based on a [name]
+     */
+    private fun getNetworkByName(name: String): EthNetwork? {
+        for ((_, value) in NETWORK_CONFIG) {
+            if (value.name === name) {
+                return value
+            }
+        }
+        return null
     }
 
     private fun cleanId(id: String) = id.clean0xPrefix().trimStart('0').prepend0xPrefix()
