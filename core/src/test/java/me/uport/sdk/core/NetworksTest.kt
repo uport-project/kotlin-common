@@ -40,6 +40,32 @@ class NetworksTest {
     }
 
     @Test
+    fun `can find a registered network using the name`() {
+
+        assertThat(Networks.get("mainnet")).isEqualTo(Networks.mainnet)
+
+        assertThat(Networks.get("rinkeby")).isEqualTo(Networks.rinkeby)
+
+        assertThat(Networks.get("kovan")).isEqualTo(Networks.kovan)
+
+        assertThat(Networks.get("ropsten")).isEqualTo(Networks.ropsten)
+    }
+
+    @Test
+    fun `can find a registered network using the different case name`() {
+        assertThat(Networks.get("MainNet")).isEqualTo(Networks.mainnet)
+    }
+
+        @Test
+    fun `throws error if the network name does not match`() {
+        assertThat {
+            Networks.get("manet")
+        }.thrownError {
+            isInstanceOf(IllegalStateException::class)
+        }
+    }
+
+    @Test
     fun `getting an unknown network throws`() {
         assertThat {
             Networks.get("0x1badc0de")

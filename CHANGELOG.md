@@ -1,3 +1,7 @@
+* 0.4.0
+    * feat - easy configuration with infuraProjectID ( #8 )
+    * feat - find networks by name after configuration ( #9 )
+
 * 0.3.2
     * build - bump kethereum to 0.76.2 ( 61d7582d )
 

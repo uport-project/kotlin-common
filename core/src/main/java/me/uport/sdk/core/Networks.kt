@@ -23,11 +23,15 @@ object Networks {
     private val NETWORK_CONFIG = emptyMap<String, EthNetwork>().toMutableMap()
 
     init {
+        registerAllNetworksWithInfura("e72b472993ff46d3b5b88faa47214d7f")
+    }
+
+    fun registerAllNetworksWithInfura(infuraId: String) {
         registerNetwork(
             EthNetwork(
                 name = "mainnet",
                 networkId = mainnetId,
-                rpcUrl = "https://mainnet.infura.io/v3/e72b472993ff46d3b5b88faa47214d7f",
+                rpcUrl = "https://mainnet.infura.io/v3/${infuraId}",
                 ethrDidRegistry = DEFAULT_ERC1056_REGISTRY,
                 explorerUrl = "https://etherscan.io",
                 // MNID.encode(mainnetId, "0xab5c8051b9a1df1aab0149f8b0630848b7ecabf6"),
@@ -41,7 +45,7 @@ object Networks {
             EthNetwork(
                 name = "rinkeby",
                 networkId = rinkebyId,
-                rpcUrl = "https://rinkeby.infura.io/v3/e72b472993ff46d3b5b88faa47214d7f",
+                rpcUrl = "https://rinkeby.infura.io/v3/${infuraId}",
                 ethrDidRegistry = DEFAULT_ERC1056_REGISTRY,
                 explorerUrl = "https://rinkeby.etherscan.io",
                 //MNID.encode(rinkebyId, "0x2cc31912b2b0f3075a87b3640923d45a26cef3ee"),
@@ -55,7 +59,7 @@ object Networks {
             EthNetwork(
                 name = "ropsten",
                 networkId = ropstenId,
-                rpcUrl = "https://ropsten.infura.io/v3/e72b472993ff46d3b5b88faa47214d7f",
+                rpcUrl = "https://ropsten.infura.io/v3/${infuraId}",
                 ethrDidRegistry = DEFAULT_ERC1056_REGISTRY,
                 explorerUrl = "https://ropsten.etherscan.io",
                 //MNID.encode(ropstenId, "0x41566e3a081f5032bdcad470adb797635ddfe1f0"),
@@ -69,7 +73,7 @@ object Networks {
             EthNetwork(
                 name = "kovan",
                 networkId = kovanId,
-                rpcUrl = "https://kovan.infura.io/v3/e72b472993ff46d3b5b88faa47214d7f",
+                rpcUrl = "https://kovan.infura.io/v3/${infuraId}",
                 ethrDidRegistry = DEFAULT_ERC1056_REGISTRY,
                 explorerUrl = "https://kovan.etherscan.io",
                 //MNID.encode(kovanId, "0x5f8e9351dc2d238fb878b6ae43aa740d62fc9758"),
@@ -117,13 +121,22 @@ object Networks {
     }
 
     /**
-     * Gets an [EthNetwork] based on a [networkId]
+     * Gets an [EthNetwork] based on a [networkId] or [name]
      */
-    fun get(networkId: String): EthNetwork {
-        val cleanNetId = cleanId(networkId)
+    fun get(nameOrId: String): EthNetwork {
+        val cleanNetId = cleanId(nameOrId)
         return NETWORK_CONFIG[cleanNetId]
-            ?: NETWORK_CONFIG[networkId]
-            ?: throw IllegalStateException("network [$networkId] not configured")
+            ?: NETWORK_CONFIG[nameOrId]
+            ?: getNetworkByName(nameOrId)
+            ?: throw IllegalStateException("network [$nameOrId] not configured")
+    }
+
+    /**
+     * Searches for an [EthNetwork] based on a [name]
+     */
+    private fun getNetworkByName(name: String): EthNetwork? {
+        val queryName = name.toLowerCase()
+        return NETWORK_CONFIG.values.find { it.name.toLowerCase() == queryName }
     }
 
     private fun cleanId(id: String) = id.clean0xPrefix().trimStart('0').prepend0xPrefix()
