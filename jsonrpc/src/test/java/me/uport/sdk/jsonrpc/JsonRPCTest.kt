@@ -11,6 +11,7 @@ import io.mockk.spyk
 import kotlinx.coroutines.runBlocking
 import me.uport.sdk.core.HttpClient
 import me.uport.sdk.core.Networks
+import me.uport.sdk.core.hexToBigInteger
 import me.uport.sdk.jsonrpc.model.JsonRpcLogItem
 import me.uport.sdk.jsonrpc.model.TransactionInformation
 import me.uport.sdk.jsonrpc.model.TransactionReceipt
@@ -19,7 +20,6 @@ import me.uport.sdk.jsonrpc.model.exceptions.JsonRpcInvalidArgumentException
 import me.uport.sdk.jsonrpc.model.exceptions.TransactionNotFoundException
 import me.uport.sdk.testhelpers.coAssert
 import org.junit.Test
-import org.kethereum.extensions.hexToBigInteger
 import java.math.BigInteger
 
 class JsonRPCTest {

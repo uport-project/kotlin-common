@@ -1,3 +1,6 @@
+* 0.4.1
+    * fix - okhttp dependency ( 4ac0e8d1 )( 4f2839f4 )
+    
 * 0.4.0
     * feat - easy configuration with infuraProjectID ( #8 )
     * feat - find networks by name after configuration ( #9 )

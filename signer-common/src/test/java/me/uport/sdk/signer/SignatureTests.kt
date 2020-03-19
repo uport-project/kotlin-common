@@ -4,8 +4,8 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlinx.coroutines.runBlocking
 import me.uport.sdk.core.decodeBase64
+import me.uport.sdk.core.hexToBigInteger
 import org.junit.Test
-import org.kethereum.extensions.hexToBigInteger
 import org.kethereum.model.SignatureData
 
 class SignatureTests {
@@ -18,7 +18,8 @@ class SignatureTests {
             "eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NksifQ.eyJpc3MiOiIzNHdqc3h3dmR1YW5vN05GQzh1ak5KbkZqYmFjZ1llV0E4bSIsImlhdCI6MTQ4NTMyMTEzMywiY2xhaW1zIjp7Im5hbWUiOiJCb2IifSwiZXhwIjoxNDg1NDA3NTMzfQ"
 
         //some base64 encoded TX data
-        val refTxData = "9oCFC6Q7dACDL+/YlJ4gaMziLeTh6A8Vy3HvQ1ogo7N8iA3gtrOnZAAAiQq83vASNFZ4kByAgA=="
+        val refTxData =
+            "9oCFC6Q7dACDL+/YlJ4gaMziLeTh6A8Vy3HvQ1ogo7N8iA3gtrOnZAAAiQq83vASNFZ4kByAgA=="
 
         testData.forEach { ref ->
 
@@ -34,7 +35,12 @@ class SignatureTests {
 
     }
 
-    data class TestVector(val privateKey: String, val address: String, val jwtSig: String, val txSig: SignatureData)
+    data class TestVector(
+        val privateKey: String,
+        val address: String,
+        val jwtSig: String,
+        val txSig: SignatureData
+    )
 
     private val testData = arrayOf(
 

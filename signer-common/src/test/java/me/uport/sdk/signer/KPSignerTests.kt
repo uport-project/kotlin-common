@@ -4,10 +4,10 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNull
 import kotlinx.coroutines.runBlocking
+import me.uport.sdk.core.hexToBigInteger
+import me.uport.sdk.core.hexToByteArray
 import org.junit.Test
-import org.kethereum.extensions.hexToBigInteger
 import org.kethereum.model.SignatureData
-import org.komputing.khex.extensions.hexToByteArray
 
 class KPSignerTests {
 

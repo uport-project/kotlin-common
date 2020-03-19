@@ -7,10 +7,10 @@ import kotlinx.serialization.PrimitiveDescriptor
 import kotlinx.serialization.PrimitiveKind
 import kotlinx.serialization.SerialDescriptor
 import kotlinx.serialization.Serializer
-import org.kethereum.extensions.hexToBigInteger
+import me.uport.sdk.core.clean0xPrefix
+import me.uport.sdk.core.hexToBigInteger
+import me.uport.sdk.core.hexToByteArray
 import org.kethereum.extensions.toHexString
-import org.komputing.khex.extensions.clean0xPrefix
-import org.komputing.khex.extensions.hexToByteArray
 import org.komputing.khex.extensions.toHexString
 import java.math.BigInteger
 

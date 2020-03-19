@@ -2,8 +2,10 @@
 
 package me.uport.sdk.signer
 
+import me.uport.sdk.core.clean0xPrefix
 import me.uport.sdk.core.decodeBase64
 import me.uport.sdk.core.padBase64
+import me.uport.sdk.core.prepend0xPrefix
 import me.uport.sdk.core.toBase64
 import me.uport.sdk.core.toBase64UrlSafe
 import org.kethereum.crypto.decompressKey
@@ -15,8 +17,6 @@ import org.kethereum.model.PRIVATE_KEY_SIZE
 import org.kethereum.model.PUBLIC_KEY_SIZE
 import org.kethereum.model.PublicKey
 import org.kethereum.model.SignatureData
-import org.komputing.khex.extensions.clean0xPrefix
-import org.komputing.khex.extensions.prepend0xPrefix
 import org.komputing.khex.extensions.toNoPrefixHexString
 import org.spongycastle.asn1.ASN1EncodableVector
 import org.spongycastle.asn1.ASN1Encoding
