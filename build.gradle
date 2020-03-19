@@ -10,7 +10,7 @@ buildscript {
         junit_version = "4.12"
         mockk_version = "1.9.3"
         assertk_version = "0.13"
-        detekt_version = "1.0.0-RC14"
+        detekt_version = "1.6.0"
         jacoco_version = "0.8.4"
 
         okhttp_version = "3.14.1"
@@ -51,7 +51,7 @@ detekt {
             "$projectDir"
     )
     //config = "${projectDir}/detekt.yml"
-    filters = ".*test.*,.*/resources/.*,.*/tmp/.*,.*/build/.*"
+//    exclude = ".*test.*,.*/resources/.*,.*/tmp/.*,.*/build/.*"
     parallel = true
     reports {
         xml {
@@ -63,6 +63,10 @@ detekt {
             destination = file("${project.buildDir}/reports/detekt.html")
         }
     }
+}
+
+tasks.withType(io.gitlab.arturbosch.detekt.Detekt) {
+    exclude("**/test/**")
 }
 
 allprojects {

@@ -116,7 +116,6 @@ object Networks {
     fun registerNetwork(network: EthNetwork) {
         val normalizedId = cleanId(network.networkId)
 
-        //TODO: check if [network] has necessary fields
         NETWORK_CONFIG[normalizedId] = network
     }
 

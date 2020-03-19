@@ -1,6 +1,12 @@
 package me.uport.sdk.jsonrpc.model
 
-import kotlinx.serialization.*
+import kotlinx.serialization.Decoder
+import kotlinx.serialization.Encoder
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.PrimitiveDescriptor
+import kotlinx.serialization.PrimitiveKind
+import kotlinx.serialization.SerialDescriptor
+import kotlinx.serialization.Serializer
 import org.kethereum.extensions.hexToBigInteger
 import org.kethereum.extensions.toHexString
 import org.komputing.khex.extensions.clean0xPrefix
