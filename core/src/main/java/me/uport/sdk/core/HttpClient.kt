@@ -2,10 +2,10 @@ package me.uport.sdk.core
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.IOException
 
 /**
@@ -24,9 +24,9 @@ class HttpClient {
      * @throws [IOException] if the request could not be executed due to cancellation, disconnect or timeout
      */
     suspend fun urlPost(url: String, jsonBody: String, authToken: String? = null): String {
-        val contentType = MediaType.parse("application/json")
+        val contentType = "application/json".toMediaTypeOrNull()
 
-        val body = RequestBody.create(contentType, jsonBody)
+        val body = jsonBody.toRequestBody(contentType)
         val request = Request.Builder().apply {
             url(url)
             addHeader("Accept", "application/json")
@@ -37,13 +37,13 @@ class HttpClient {
             post(body)
         }.build()
 
-        val response = okClient.newCall(request).execute()
+        val response = withContext(Dispatchers.IO) { okClient.newCall(request).execute() }
 
         if (response.isSuccessful) {
-            return withContext(Dispatchers.IO) { response.body()?.string() }
+            return withContext(Dispatchers.IO) { response.body?.string() }
                 ?: throw IOException("got a null response body")
         } else {
-            val code = response.code()
+            val code = response.code
             throw IOException("server responded with HTTP $code")
         }
     }
@@ -63,13 +63,13 @@ class HttpClient {
             }
         }.build()
 
-        val response = okClient.newCall(request).execute()
+        val response = withContext(Dispatchers.IO) { okClient.newCall(request).execute() }
 
         if (response.isSuccessful) {
-            return withContext(Dispatchers.IO) { response.body()?.string() }
+            return withContext(Dispatchers.IO) { response.body?.string() }
                 ?: throw IOException("got a null response body")
         } else {
-            val code = response.code()
+            val code = response.code
             throw IOException("server responded with HTTP $code")
         }
     }
