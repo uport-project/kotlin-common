@@ -3,23 +3,24 @@
 buildscript {
 
     ext {
-        kotlin_version = '1.3.50'
-        kotlin_serialization_version = '0.12.0'
-        coroutines_version = "1.3.0"
+        kotlin_version = '1.3.70'
+        kotlin_serialization_version = '0.20.0'
+        coroutines_version = "1.3.5"
 
         junit_version = "4.12"
         mockk_version = "1.9.3"
         assertk_version = "0.13"
-        detekt_version = "1.0.0-RC14"
+        detekt_version = "1.6.0"
         jacoco_version = "0.8.4"
 
-        okhttp_version = "3.14.1"
+        okhttp_version = "4.4.1"
 
         spongycastle_version = "1.58.0.0"
-        kethereum_version = "0.76.2"
-        khex_version = "1.0.0-RC3"
+        kethereum_version = "0.81.4"
+        khex_version = "1.0.0-RC6"
+        khash_version = "1.0.0-RC5"
 
-        current_release_version = "0.4.0"
+        current_release_version = "0.4.1"
     }
 
     repositories {
@@ -51,7 +52,7 @@ detekt {
             "$projectDir"
     )
     //config = "${projectDir}/detekt.yml"
-    filters = ".*test.*,.*/resources/.*,.*/tmp/.*,.*/build/.*"
+//    exclude = ".*test.*,.*/resources/.*,.*/tmp/.*,.*/build/.*"
     parallel = true
     reports {
         xml {
@@ -63,6 +64,10 @@ detekt {
             destination = file("${project.buildDir}/reports/detekt.html")
         }
     }
+}
+
+tasks.withType(io.gitlab.arturbosch.detekt.Detekt) {
+    exclude("**/test/**")
 }
 
 allprojects {

@@ -9,6 +9,7 @@ import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonConfiguration
 import me.uport.sdk.core.HttpClient
 import me.uport.sdk.core.Networks
 import me.uport.sdk.jsonrpc.model.JsonRpcLogItem
@@ -37,7 +38,7 @@ class JsonRpcBaseResponseTest {
 
     @Test
     fun `can deserialize log item json`() {
-        val item = Json.nonstrict.parse(JsonRpcLogItem.serializer(), logItemJson)
+        val item = Json(JsonConfiguration.Stable).parse(JsonRpcLogItem.serializer(), logItemJson)
 
 
         assertThat(item).isNotNull()

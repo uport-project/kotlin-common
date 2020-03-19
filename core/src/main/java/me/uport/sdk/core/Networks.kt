@@ -4,6 +4,7 @@ package me.uport.sdk.core
 
 import org.komputing.khex.extensions.clean0xPrefix
 import org.komputing.khex.extensions.prepend0xPrefix
+import org.komputing.khex.model.HexString
 
 /**
  * Convenience singleton that holds URLs and addresses for different eth networks.
@@ -116,12 +117,11 @@ object Networks {
     fun registerNetwork(network: EthNetwork) {
         val normalizedId = cleanId(network.networkId)
 
-        //TODO: check if [network] has necessary fields
         NETWORK_CONFIG[normalizedId] = network
     }
 
     /**
-     * Gets an [EthNetwork] based on a [networkId] or [name]
+     * Gets an [EthNetwork] based on a networkId or name
      */
     fun get(nameOrId: String): EthNetwork {
         val cleanNetId = cleanId(nameOrId)
@@ -139,7 +139,12 @@ object Networks {
         return NETWORK_CONFIG.values.find { it.name.toLowerCase() == queryName }
     }
 
-    private fun cleanId(id: String) = id.clean0xPrefix().trimStart('0').prepend0xPrefix()
+    private fun cleanId(id: String) : String {
+        val str = HexString(id)
+            .clean0xPrefix().string
+            .trimStart('0')
+        return HexString(str).prepend0xPrefix().string
+    }
 
 }
 

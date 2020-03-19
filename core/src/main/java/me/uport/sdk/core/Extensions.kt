@@ -2,7 +2,17 @@
 
 package me.uport.sdk.core
 
+import org.kethereum.extensions.hexToBigInteger
+import org.komputing.khex.extensions.clean0xPrefix
+import org.komputing.khex.extensions.hexToByteArray
+import org.komputing.khex.extensions.prepend0xPrefix
+import org.komputing.khex.model.HexString
 import org.spongycastle.util.encoders.Base64
+
+fun String.clean0xPrefix() = HexString(this).clean0xPrefix().string
+fun String.prepend0xPrefix() = HexString(this).prepend0xPrefix().string
+fun String.hexToBigInteger() = HexString(this).hexToBigInteger()
+fun String.hexToByteArray() = HexString(this).hexToByteArray()
 
 //using spongy castle implementation because the android one can't be used properly in tests
 /**

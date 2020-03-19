@@ -2,10 +2,12 @@
 
 package me.uport.sdk.jsonrpc
 
+import kotlinx.serialization.builtins.list
+import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.list
-import kotlinx.serialization.serializer
+import kotlinx.serialization.json.JsonConfiguration
 import me.uport.sdk.core.HttpClient
+import me.uport.sdk.core.hexToBigInteger
 import me.uport.sdk.jsonrpc.model.JsonRpcLogItem
 import me.uport.sdk.jsonrpc.model.TransactionInformation
 import me.uport.sdk.jsonrpc.model.TransactionReceipt
@@ -15,7 +17,6 @@ import me.uport.sdk.jsonrpc.model.request.EthCallParams
 import me.uport.sdk.jsonrpc.model.request.JsonRpcLogsRequestParams
 import me.uport.sdk.jsonrpc.model.request.JsonRpcRequest
 import me.uport.sdk.jsonrpc.model.response.JsonRpcResponse
-import org.kethereum.extensions.hexToBigInteger
 import java.io.IOException
 import java.math.BigInteger
 
@@ -26,6 +27,14 @@ open class JsonRPC(
     private val rpcEndpoint: String,
     private val httpClient: HttpClient = HttpClient()
 ) {
+
+    private val lenientJson = Json(
+        JsonConfiguration.Stable.copy(
+            isLenient = true,
+            ignoreUnknownKeys = true,
+            useArrayPolymorphism = true
+        )
+    )
 
 //=============================
 // eth_call
@@ -90,7 +99,7 @@ open class JsonRPC(
 
         val rawResult = httpClient.urlPost(rpcEndpoint, payloadRequest)
 
-        val parsedResponse = Json.nonstrict.parse(
+        val parsedResponse = lenientJson.parse(
             JsonRpcResponse.serializer(JsonRpcLogItem.serializer().list),
             rawResult
         )
@@ -201,7 +210,7 @@ open class JsonRPC(
 
         val rawResult = httpClient.urlPost(rpcEndpoint, payloadRequest)
 
-        val parsedResponse = Json.nonstrict.parse(
+        val parsedResponse = lenientJson.parse(
             JsonRpcResponse.serializer(TransactionReceipt.serializer()),
             rawResult
         )
@@ -235,7 +244,7 @@ open class JsonRPC(
 
         val rawResult = httpClient.urlPost(rpcEndpoint, payloadRequest)
 
-        val parsedResponse = Json.nonstrict.parse(
+        val parsedResponse = lenientJson.parse(
             JsonRpcResponse.serializer(TransactionInformation.serializer()),
             rawResult
         )
@@ -287,7 +296,7 @@ open class JsonRPC(
     private suspend fun jsonRpcGenericCall(url: String, payloadRequest: String): String {
         val rawResult = httpClient.urlPost(url, payloadRequest)
 
-        val parsedResponse = Json.nonstrict.parse(
+        val parsedResponse = lenientJson.parse(
             JsonRpcResponse.serializer(String.serializer()),
             rawResult
         )
@@ -298,6 +307,3 @@ open class JsonRPC(
     }
 
 }
-
-
-

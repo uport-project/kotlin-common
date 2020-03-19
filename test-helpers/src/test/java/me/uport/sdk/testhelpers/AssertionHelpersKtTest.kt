@@ -21,9 +21,9 @@ class AssertionHelpersKtTest {
     fun `can coAssert on throwing methods`() {
         coAssert {
             delay(1)
-            throw RuntimeException("I'm throwing it")
+            throw IllegalStateException("I'm throwing it")
         }.thrownError {
-            isInstanceOf(RuntimeException::class)
+            isInstanceOf(IllegalStateException::class)
             hasMessage("I'm throwing it")
         }
     }
