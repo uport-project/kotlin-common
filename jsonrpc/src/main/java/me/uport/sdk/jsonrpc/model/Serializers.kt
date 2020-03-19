@@ -1,7 +1,6 @@
 package me.uport.sdk.jsonrpc.model
 
 import kotlinx.serialization.*
-import kotlinx.serialization.internal.StringDescriptor
 import org.kethereum.extensions.hexToBigInteger
 import org.kethereum.extensions.toHexString
 import org.komputing.khex.extensions.clean0xPrefix
@@ -16,10 +15,10 @@ import java.math.BigInteger
 @Serializer(forClass = BigInteger::class)
 object BigIntegerSerializer : KSerializer<BigInteger> {
     override val descriptor: SerialDescriptor =
-        StringDescriptor.withName("BigIntegerSerializer")
+        PrimitiveDescriptor("BigIntegerSerializer", PrimitiveKind.STRING)
 
-    override fun serialize(encoder: Encoder, obj: BigInteger) {
-        encoder.encodeString(obj.toHexString())
+    override fun serialize(encoder: Encoder, value: BigInteger) {
+        encoder.encodeString(value.toHexString())
     }
 
     override fun deserialize(decoder: Decoder): BigInteger = decoder
@@ -42,10 +41,10 @@ object BigIntegerSerializer : KSerializer<BigInteger> {
 @Serializer(forClass = ByteArray::class)
 object ByteArraySerializer : KSerializer<ByteArray> {
     override val descriptor: SerialDescriptor =
-        StringDescriptor.withName("ByteArraySerializer")
+        PrimitiveDescriptor("ByteArraySerializer", PrimitiveKind.STRING)
 
-    override fun serialize(encoder: Encoder, obj: ByteArray) {
-        encoder.encodeString(obj.toHexString())
+    override fun serialize(encoder: Encoder, value: ByteArray) {
+        encoder.encodeString(value.toHexString())
     }
 
     override fun deserialize(decoder: Decoder): ByteArray = decoder
