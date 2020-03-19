@@ -31,6 +31,7 @@ data class TransactionInformation(
 )
 
 {
+    @Suppress("ComplexMethod")
     @Generated
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -74,6 +75,4 @@ data class TransactionInformation(
         result = 31 * result + s.hashCode()
         return result
     }
-
-
 }

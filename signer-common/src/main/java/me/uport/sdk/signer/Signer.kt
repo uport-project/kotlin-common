@@ -1,6 +1,6 @@
 package me.uport.sdk.signer
 
-import org.kethereum.functions.encodeRLP
+import org.kethereum.extensions.transactions.encodeRLP
 import org.kethereum.model.SignatureData
 import org.kethereum.model.Transaction
 import kotlin.coroutines.resume
