@@ -10,7 +10,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
 
-    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
+    api "com.squareup.okhttp3:okhttp:$okhttp_version"
     api "com.github.komputing.khex:extensions-jvm:$khex_version"
     implementation "com.madgag.spongycastle:core:$spongycastle_version"
 
