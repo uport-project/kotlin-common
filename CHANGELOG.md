@@ -1,3 +1,6 @@
+* 0.4.3
+    * fix - upgrade assertk & apply detekt config ( #11 )
+    
 * 0.4.2
     * fix - Expose internal dependencies as API to fix NoClassDefFound errors downstream ( 791c0aa7 )
 
