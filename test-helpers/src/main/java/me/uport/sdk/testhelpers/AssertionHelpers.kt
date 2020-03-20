@@ -1,7 +1,9 @@
+@file:Suppress("DEPRECATION")
+
 package me.uport.sdk.testhelpers
 
 import assertk.Assert
-import assertk.AssertBlock
+import assertk.Result
 import assertk.assertions.support.expected
 import assertk.assertions.support.show
 import kotlinx.coroutines.CoroutineScope
@@ -11,7 +13,7 @@ import kotlin.reflect.KClass
 /**
  * simple wrapper to make assertions on coroutine blocks
  */
-fun <T> coAssert(block: suspend CoroutineScope.() -> T): AssertBlock<T> {
+fun <T> coAssert(block: suspend CoroutineScope.() -> T): Assert<Result<T>> {
     return assertk.assertThat {
         runBlocking {
             block()

@@ -1,8 +1,11 @@
 package me.uport.sdk.testhelpers
 
+import assertk.all
 import assertk.assertThat
 import assertk.assertions.hasMessage
+import assertk.assertions.isFailure
 import assertk.assertions.isInstanceOf
+import assertk.assertions.isSuccess
 import kotlinx.coroutines.delay
 import org.junit.Test
 
@@ -13,7 +16,7 @@ class AssertionHelpersKtTest {
 
         coAssert {
             delay(1)
-        }.doesNotThrowAnyException()
+        }.isSuccess()
 
     }
 
@@ -22,7 +25,7 @@ class AssertionHelpersKtTest {
         coAssert {
             delay(1)
             throw IllegalStateException("I'm throwing it")
-        }.thrownError {
+        }.isFailure().all {
             isInstanceOf(IllegalStateException::class)
             hasMessage("I'm throwing it")
         }
