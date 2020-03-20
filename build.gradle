@@ -9,7 +9,7 @@ buildscript {
 
         junit_version = "4.12"
         mockk_version = "1.9.3"
-        assertk_version = "0.13"
+        assertk_version = "0.22"
         detekt_version = "1.6.0"
         jacoco_version = "0.8.4"
 
@@ -20,7 +20,7 @@ buildscript {
         khex_version = "1.0.0-RC6"
         khash_version = "1.0.0-RC5"
 
-        current_release_version = "0.4.2"
+        current_release_version = "0.4.3"
     }
 
     repositories {
@@ -51,8 +51,7 @@ detekt {
     input = files(
             "$projectDir"
     )
-    //config = "${projectDir}/detekt.yml"
-//    exclude = ".*test.*,.*/resources/.*,.*/tmp/.*,.*/build/.*"
+    config = files("${projectDir}/detekt.yml")
     parallel = true
     reports {
         xml {
@@ -64,10 +63,6 @@ detekt {
             destination = file("${project.buildDir}/reports/detekt.html")
         }
     }
-}
-
-tasks.withType(io.gitlab.arturbosch.detekt.Detekt) {
-    exclude("**/test/**")
 }
 
 allprojects {

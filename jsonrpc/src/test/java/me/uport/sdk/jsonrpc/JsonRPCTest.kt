@@ -1,8 +1,10 @@
 package me.uport.sdk.jsonrpc
 
+import assertk.all
 import assertk.assertThat
 import assertk.assertions.hasMessage
 import assertk.assertions.isEqualTo
+import assertk.assertions.isFailure
 import assertk.assertions.isInstanceOf
 import io.mockk.CapturingSlot
 import io.mockk.coEvery
@@ -55,7 +57,7 @@ class JsonRPCTest {
 
         coAssert {
             rpc.sendRawTransaction(signedTx)
-        }.thrownError {
+        }.isFailure().all {
             isInstanceOf(JsonRpcException::class)
             hasMessage("nonce too low")
         }
@@ -105,7 +107,7 @@ class JsonRPCTest {
 
         coAssert {
             rpc.getTransactionByHash(txHash)
-        }.thrownError {
+        }.isFailure().all {
             isInstanceOf(TransactionNotFoundException::class)
         }
     }
@@ -122,7 +124,7 @@ class JsonRPCTest {
 
         coAssert {
             rpc.getTransactionByHash(txHash)
-        }.thrownError {
+        }.isFailure().all {
             isInstanceOf(JsonRpcInvalidArgumentException::class)
         }
     }
