@@ -1,7 +1,9 @@
 package me.uport.sdk.core
 
+import assertk.all
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isFailure
 import assertk.assertions.isInstanceOf
 import org.junit.Test
 
@@ -56,11 +58,11 @@ class NetworksTest {
         assertThat(Networks.get("MainNet")).isEqualTo(Networks.mainnet)
     }
 
-        @Test
+    @Test
     fun `throws error if the network name does not match`() {
         assertThat {
             Networks.get("manet")
-        }.thrownError {
+        }.isFailure().all {
             isInstanceOf(IllegalStateException::class)
         }
     }
@@ -69,7 +71,7 @@ class NetworksTest {
     fun `getting an unknown network throws`() {
         assertThat {
             Networks.get("0x1badc0de")
-        }.thrownError {
+        }.isFailure().all {
             isInstanceOf(IllegalStateException::class)
         }
     }
