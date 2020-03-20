@@ -1,3 +1,6 @@
+* 0.4.2
+    * fix - Expose internal dependencies as API to fix NoClassDefFound errors downstream ( 791c0aa7 )
+
 * 0.4.1
     * fix - okhttp dependency ( 4ac0e8d1 )( 4f2839f4 )
     
