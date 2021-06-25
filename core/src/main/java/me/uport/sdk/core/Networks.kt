@@ -135,8 +135,8 @@ object Networks {
      * Searches for an [EthNetwork] based on a [name]
      */
     private fun getNetworkByName(name: String): EthNetwork? {
-        val queryName = name.toLowerCase()
-        return NETWORK_CONFIG.values.find { it.name.toLowerCase() == queryName }
+        val queryName = name.lowercase()
+        return NETWORK_CONFIG.values.find { it.name.lowercase() == queryName }
     }
 
     private fun cleanId(id: String) : String {

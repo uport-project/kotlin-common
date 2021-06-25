@@ -1,3 +1,6 @@
+* 0.4.4
+  * chore - upgrade dependencies ( #12 )
+  
 * 0.4.3
     * fix - upgrade assertk & apply detekt config ( #11 )
     

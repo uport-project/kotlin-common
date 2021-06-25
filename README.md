@@ -92,7 +92,7 @@ allprojects {
 In your module `build.gradle` file, add:
 
 ```groovy
-def uport_kotlin_common_version = "0.4.3"
+def uport_kotlin_common_version = "0.4.4"
 dependencies {
     //...
     // core lib

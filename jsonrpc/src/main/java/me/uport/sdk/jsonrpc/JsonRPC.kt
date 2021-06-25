@@ -2,7 +2,7 @@
 
 package me.uport.sdk.jsonrpc
 
-import kotlinx.serialization.builtins.list
+import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonConfiguration
@@ -28,13 +28,11 @@ open class JsonRPC(
     private val httpClient: HttpClient = HttpClient()
 ) {
 
-    private val lenientJson = Json(
-        JsonConfiguration.Stable.copy(
-            isLenient = true,
-            ignoreUnknownKeys = true,
-            useArrayPolymorphism = true
-        )
-    )
+    private val lenientJson = Json {
+        isLenient = true
+        ignoreUnknownKeys = true
+        useArrayPolymorphism = true
+    }
 
 //=============================
 // eth_call
@@ -99,8 +97,8 @@ open class JsonRPC(
 
         val rawResult = httpClient.urlPost(rpcEndpoint, payloadRequest)
 
-        val parsedResponse = lenientJson.parse(
-            JsonRpcResponse.serializer(JsonRpcLogItem.serializer().list),
+        val parsedResponse = lenientJson.decodeFromString(
+            JsonRpcResponse.serializer(ListSerializer(JsonRpcLogItem.serializer())),
             rawResult
         )
 
@@ -159,8 +157,6 @@ open class JsonRPC(
      * The number is usable as `nonce` (since nonce is zero indexed)
      *
      * See also: https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_getTransactionCount
-     *
-     * FIXME: add support for pending transactions
      */
     suspend fun getTransactionCount(address: String): BigInteger {
         val payloadRequest = JsonRpcRequest(
@@ -210,7 +206,7 @@ open class JsonRPC(
 
         val rawResult = httpClient.urlPost(rpcEndpoint, payloadRequest)
 
-        val parsedResponse = lenientJson.parse(
+        val parsedResponse = lenientJson.decodeFromString(
             JsonRpcResponse.serializer(TransactionReceipt.serializer()),
             rawResult
         )
@@ -244,7 +240,7 @@ open class JsonRPC(
 
         val rawResult = httpClient.urlPost(rpcEndpoint, payloadRequest)
 
-        val parsedResponse = lenientJson.parse(
+        val parsedResponse = lenientJson.decodeFromString(
             JsonRpcResponse.serializer(TransactionInformation.serializer()),
             rawResult
         )
@@ -296,7 +292,7 @@ open class JsonRPC(
     private suspend fun jsonRpcGenericCall(url: String, payloadRequest: String): String {
         val rawResult = httpClient.urlPost(url, payloadRequest)
 
-        val parsedResponse = lenientJson.parse(
+        val parsedResponse = lenientJson.decodeFromString(
             JsonRpcResponse.serializer(String.serializer()),
             rawResult
         )
