@@ -6,7 +6,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
 import java.math.BigInteger
-import javax.annotation.Generated
+import javax.annotation.processing.Generated
 
 /**
  * Data representing the transaction information resulting from `eth_getTransactionByHash`
