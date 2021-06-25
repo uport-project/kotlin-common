@@ -6,7 +6,6 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
 import java.math.BigInteger
-import javax.annotation.processing.Generated
 
 /**
  * Data representing the transaction information resulting from `eth_getTransactionByHash`
@@ -32,7 +31,6 @@ data class TransactionInformation(
 
 {
     @Suppress("ComplexMethod")
-    @Generated
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -57,7 +55,6 @@ data class TransactionInformation(
         return true
     }
 
-    @Generated
     override fun hashCode(): Int {
         var result = txHash?.hashCode() ?: 0
         result = 31 * result + nonce.hashCode()
