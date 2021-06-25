@@ -157,8 +157,6 @@ open class JsonRPC(
      * The number is usable as `nonce` (since nonce is zero indexed)
      *
      * See also: https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_getTransactionCount
-     *
-     * FIXME: add support for pending transactions
      */
     suspend fun getTransactionCount(address: String): BigInteger {
         val payloadRequest = JsonRpcRequest(

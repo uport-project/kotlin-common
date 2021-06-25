@@ -3,11 +3,18 @@
 
 package me.uport.sdk.jsonrpc.model.request
 
-import kotlinx.serialization.*
+import kotlinx.serialization.ContextualSerializer
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.InternalSerializationApi
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.Required
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.UseSerializers
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.serializer
 import me.uport.sdk.jsonrpc.model.BigIntegerSerializer
 
 @ExperimentalSerializationApi
