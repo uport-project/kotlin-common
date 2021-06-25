@@ -38,7 +38,7 @@ class JsonRpcBaseResponseTest {
 
     @Test
     fun `can deserialize log item json`() {
-        val item = Json(JsonConfiguration.Stable).parse(JsonRpcLogItem.serializer(), logItemJson)
+        val item = Json.decodeFromString(JsonRpcLogItem.serializer(), logItemJson)
 
 
         assertThat(item).isNotNull()

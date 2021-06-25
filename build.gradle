@@ -3,31 +3,31 @@
 buildscript {
 
     ext {
-        kotlin_version = '1.3.70'
-        kotlin_serialization_version = '0.20.0'
-        coroutines_version = "1.3.5"
+        kotlin_version = '1.5.20'
+        kotlin_serialization_version = '1.2.1'
+        coroutines_version = "1.5.0"
 
         junit_version = "4.12"
-        mockk_version = "1.9.3"
-        assertk_version = "0.22"
-        detekt_version = "1.6.0"
-        jacoco_version = "0.8.4"
+        mockk_version = "1.11.0"
+        assertk_version = "0.24"
+        detekt_version = "1.17.1"
+        jacoco_version = "0.8.7"
 
-        okhttp_version = "4.4.1"
+        okhttp_version = "4.9.1"
 
         spongycastle_version = "1.58.0.0"
-        kethereum_version = "0.81.4"
-        khex_version = "1.0.0-RC6"
+        kethereum_version = "0.83.4"
+        khex_version = "1.0.0"
         khash_version = "1.0.0-RC5"
 
         current_release_version = "0.4.3"
     }
 
     repositories {
+        gradlePluginPortal()
         google()
-        jcenter()
+        mavenCentral()
         maven { url "https://jitpack.io" }
-        maven { url "https://kotlin.bintray.com/kotlinx" }
     }
 
     dependencies {
@@ -75,9 +75,8 @@ allprojects {
 
     repositories {
         google()
-        jcenter()
+        mavenCentral()
         maven { url 'https://jitpack.io' }
-        maven { url "https://kotlin.bintray.com/kotlinx" }
 //        mavenLocal()
     }
 

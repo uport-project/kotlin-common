@@ -1,12 +1,13 @@
 package me.uport.sdk.jsonrpc.model
 
-import kotlinx.serialization.Decoder
-import kotlinx.serialization.Encoder
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.PrimitiveDescriptor
-import kotlinx.serialization.PrimitiveKind
-import kotlinx.serialization.SerialDescriptor
 import kotlinx.serialization.Serializer
+import kotlinx.serialization.descriptors.PrimitiveKind
+import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 import me.uport.sdk.core.clean0xPrefix
 import me.uport.sdk.core.hexToBigInteger
 import me.uport.sdk.core.hexToByteArray
@@ -18,10 +19,11 @@ import java.math.BigInteger
  * This is a (de)serialization helper for BigInteger encoded as hex string,
  * optionally prefixed with `0x`. This is usable for eth_QUANTITY
  */
+@ExperimentalSerializationApi
 @Serializer(forClass = BigInteger::class)
 object BigIntegerSerializer : KSerializer<BigInteger> {
     override val descriptor: SerialDescriptor =
-        PrimitiveDescriptor("BigIntegerSerializer", PrimitiveKind.STRING)
+        PrimitiveSerialDescriptor("BigIntegerSerializer", PrimitiveKind.STRING)
 
     override fun serialize(encoder: Encoder, value: BigInteger) {
         encoder.encodeString(value.toHexString())
@@ -47,7 +49,7 @@ object BigIntegerSerializer : KSerializer<BigInteger> {
 @Serializer(forClass = ByteArray::class)
 object ByteArraySerializer : KSerializer<ByteArray> {
     override val descriptor: SerialDescriptor =
-        PrimitiveDescriptor("ByteArraySerializer", PrimitiveKind.STRING)
+        PrimitiveSerialDescriptor("ByteArraySerializer", PrimitiveKind.STRING)
 
     override fun serialize(encoder: Encoder, value: ByteArray) {
         encoder.encodeString(value.toHexString())
